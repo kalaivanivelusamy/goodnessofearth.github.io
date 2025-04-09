@@ -1,98 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Goodness of Earth - Hair Care</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goodness of Earth - Hair Care Products</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       margin: 0;
-      padding: 0;
-      background-color: #f3f3f3;
-      color: #333;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0F321C;
+      color: white;
     }
     header {
-      background-color: #2d6a4f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #0F321C;
+      padding: 1rem 2rem;
+    }
+    header img {
+      height: 50px;
+    }
+    nav a {
       color: white;
-      padding: 1rem;
-      text-align: center;
+      text-decoration: none;
+      margin-left: 1rem;
+      font-weight: bold;
     }
     .container {
-      max-width: 1000px;
-      margin: 2rem auto;
-      padding: 1rem;
-      background: white;
-      border-radius: 8px;
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
     }
     .product {
-      margin-bottom: 2rem;
+      background-color: white;
+      color: #0F321C;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
     }
-    .product h2 {
-      color: #1b4332;
+    .product img {
+      width: 100%;
+      border-radius: 8px;
     }
-    .reviews {
-      margin-top: 0.5rem;
-      padding-left: 1rem;
-    }
-    .buy-button {
-      margin-top: 1rem;
+    .btn {
       display: inline-block;
-      background: #40916c;
-      color: white;
+      margin-top: 1rem;
+      background-color: #D1E231;
+      color: #0F321C;
       padding: 0.5rem 1rem;
-      border-radius: 4px;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
       text-decoration: none;
+    }
+    footer {
+      text-align: center;
+      padding: 2rem;
+      font-size: 0.9rem;
+      background-color: #0F321C;
     }
   </style>
 </head>
+
 <body>
   <header>
-    <h1>Goodness of Earth</h1>
-    <p>Pure Hair Care. Naturally.</p>
-    <a href="contact.html" style="margin-left: 1rem;">Contact</a>
+    <img src="Logo - GOE.png" alt="Goodness of Earth Logo">
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="contact.html">Contact</a>
+    </nav>
   </header>
-  <div class="container">
 
+  <section class="container">
     <div class="product">
-      <h2>1. Herbal Shikakai Hair Wash</h2>
-      <p>Gently cleanses scalp, strengthens roots, and promotes natural shine. Made fresh for every order.</p>
-      <div class="reviews">
-        <strong>Reviews:</strong>
-        <ul>
-          <li>🌟🌟🌟🌟🌟 - "Best alternative to shampoo I've ever tried!" - Ananya</li>
-          <li>🌟🌟🌟🌟 - "Smells earthy and leaves my hair soft." - Meera</li>
-        </ul>
-      </div>
-      <a class="buy-button" href="https://rzp.io/l/shikakaiwash" target="_blank">Buy Now ₹249</a>
+      <img src="Three_realistic_and_cleanly_styled_branded_product.png" alt="Shikakai Powder">
+      <h2>Shikakai Powder</h2>
+      <p>Natural hair cleanser that strengthens roots and promotes growth.</p>
+      <p><strong>Reviews:</strong> ⭐⭐⭐⭐☆ - "Leaves my hair silky and soft!"</p>
+      <a class="btn" href="https://rzp.io/l/goodnessofearth-shikakai" target="_blank">Buy Now</a>
     </div>
-
     <div class="product">
-      <h2>2. Strengthening Hair Oil</h2>
-      <p>Infused with hibiscus, curry leaves, and cold-pressed coconut oil. Nourishes from root to tip.</p>
-      <div class="reviews">
-        <strong>Reviews:</strong>
-        <ul>
-          <li>🌟🌟🌟🌟🌟 - "I noticed new baby hair in 3 weeks!" - Priya</li>
-          <li>🌟🌟🌟🌟 - "Love the smell and how light it feels." - Rhea</li>
-        </ul>
-      </div>
-      <a class="buy-button" href="https://rzp.io/l/hairoil" target="_blank">Buy Now ₹399</a>
+      <img src="Three_realistic_and_cleanly_styled_branded_product.png" alt="Herbal Hair Oil">
+      <h2>Herbal Hair Oil</h2>
+      <p>Enriched with ayurvedic herbs to deeply nourish your scalp.</p>
+      <p><strong>Reviews:</strong> ⭐⭐⭐⭐⭐ - "The best hair oil I’ve ever used!"</p>
+      <a class="btn" href="https://rzp.io/l/goodnessofearth-oil" target="_blank">Buy Now</a>
     </div>
-
     <div class="product">
-      <h2>3. Anti-Hairfall Hair Pack</h2>
-      <p>Made with amla, bhringraj, and fenugreek. Reduces hair fall and supports thick regrowth.</p>
-      <div class="reviews">
-        <strong>Reviews:</strong>
-        <ul>
-          <li>🌟🌟🌟🌟🌟 - "Saw less hair on my comb in a week!" - Sneha</li>
-          <li>🌟🌟🌟🌟 - "Bit messy but totally worth it." - Kavya</li>
-        </ul>
-      </div>
-      <a class="buy-button" href="https://rzp.io/l/hairpack" target="_blank">Buy Now ₹349</a>
+      <img src="Three_realistic_and_cleanly_styled_branded_product.png" alt="Hair Mask">
+      <h2>Natural Hair Mask</h2>
+      <p>Deep conditioning for dry, frizzy, or damaged hair.</p>
+      <p><strong>Reviews:</strong> ⭐⭐⭐⭐☆ - "My curls love this mask!"</p>
+      <a class="btn" href="https://rzp.io/l/goodnessofearth-mask" target="_blank">Buy Now</a>
     </div>
+  </section>
 
-  </div>
+  <footer>
+    &copy; 2025 Goodness of Earth. All rights reserved.
+  </footer>
 </body>
+
 </html>
