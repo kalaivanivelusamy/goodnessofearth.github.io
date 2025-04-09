@@ -24,7 +24,6 @@
       align-items: center;
       justify-content: space-between;
       width: 100%;
-      max-width: 1000px;
     }
     header img {
       height: 55px;
@@ -50,7 +49,6 @@
       font-size: 0.95rem;
       color: #4b4b4b;
       max-width: 500px;
-      margin: 0.5rem auto 0;
     }
     h1.section-title {
       text-align: center;
@@ -79,6 +77,10 @@
     .product h2 {
       margin-top: 0;
       color: #0F321C;
+    }
+    .description, .how-to-use {
+      margin-top: 1rem;
+      font-size: 0.95rem;
     }
     .reviews {
       display: flex;
@@ -119,17 +121,6 @@
       font-size: 0.9rem;
     }
     @media (max-width: 768px) {
-      .header-top {
-        flex-direction: column;
-        align-items: center;
-      }
-      nav {
-        margin-top: 1rem;
-      }
-      .branding p {
-        font-size: 0.85rem;
-        padding: 0 1rem;
-      }
       .product {
         flex-direction: column;
       }
@@ -160,10 +151,15 @@
     <h1 class="section-title">Our Hair Care Products</h1>
 
     <section class="product">
-      <img src="A_realistic_top-down_product_photo_of_a_kraft_pape.png" alt="Hair Cleanser">
+      <img src="cleanser.png" alt="Hair Cleanser">
       <div class="product-content">
         <h2>Shikakai Hair Cleanser</h2>
-        <p>Made with sun-dried shikakai, reetha, and hibiscus. A natural cleanser for healthy, shiny hair.</p>
+        <div class="description">
+          <strong>Description:</strong> This handcrafted blend features sun-dried shikakai, reetha, and hibiscus. A gentle, natural cleanser that restores your scalp’s balance and supports shiny, strong hair.
+        </div>
+        <div class="how-to-use">
+          <strong>How to Use:</strong> Mix 1-2 tablespoons with water to make a paste. Apply to scalp and hair, gently massage for 3–5 minutes, then rinse thoroughly.
+        </div>
         <div class="reviews">
           <div class="review-box">
             ⭐️⭐️⭐️⭐️⭐️ - "Made my hair feel fresh and soft."
@@ -181,7 +177,34 @@
         <a href="https://rzp.io/l/goodnessofearth1" class="buy-button">Buy Now</a>
       </div>
     </section>
-  </main>
+  <section class="product">
+  <img src="oil.png" alt="Hair Oil">
+  <div class="product-content">
+    <h2>Back to Roots Hair Oil</h2>
+    <div class="description">
+      <strong>Description:</strong> A deeply nourishing blend of coconut oil, curry leaves, amla, and hibiscus. This hand-crafted oil promotes hair growth, reduces hair fall, and restores scalp health.
+    </div>
+    <div class="how-to-use">
+      <strong>How to Use:</strong> Warm a small amount of oil and massage into the scalp. Leave for at least 1 hour or overnight before washing. Use 2–3 times a week for best results.
+    </div>
+    <div class="reviews">
+      <div class="review-box">
+        ⭐️⭐️⭐️⭐️⭐️ - "My hair fall has significantly reduced!"
+        <div class="review-date">09 April 2025</div>
+      </div>
+      <div class="review-box">
+        ⭐️⭐️⭐️⭐️ - "Smells great and leaves my hair shiny."
+        <div class="review-date">08 April 2025</div>
+      </div>
+      <div class="review-box">
+        ⭐️⭐️⭐️⭐️⭐️ - "Feels like an authentic traditional oil."
+        <div class="review-date">06 April 2025</div>
+      </div>
+    </div>
+    <a href="https://rzp.io/l/goodnessofearth-oil" class="buy-button">Buy Now</a>
+  </div>
+</section>
+</main>
 
   <footer>
     &copy; 2025 Goodness of Earth. All rights reserved.
