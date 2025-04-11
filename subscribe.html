@@ -1,176 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Join the Hair Ritual - Goodness of Earth</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Subscribe - Hair Ritual</title>
+  <link rel="stylesheet" href="styles.css" />
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #f9f5ec, #ede5d3);
+      background-color: #f9f5f0;
       margin: 0;
-      color: #0F321C;
-    }
-    header {
-      background-color: #f2f8ec;
-      padding: 1rem 2rem;
+      padding: 0;
       display: flex;
-      align-items: center;
-      justify-content: space-between;
+      flex-direction: row;
     }
-    header img {
-      height: 50px;
-      background: white;
-      border-radius: 10px;
-      padding: 0.25rem;
+    .content {
+      flex: 2;
+      padding: 2rem;
     }
-    nav a {
-      color: #0F321C;
-      margin-left: 1rem;
-      text-decoration: none;
-      font-weight: bold;
+    .testimonials {
+      flex: 1;
+      background-color: #fff9f4;
+      padding: 2rem 1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      border-left: 1px solid #ecdcd2;
     }
-    main {
-      max-width: 800px;
-      margin: 2rem auto;
-      padding: 1rem;
-    }
-    .highlight {
-      background-color: #fffbe5;
-      padding: 1rem;
-      border-radius: 12px;
-      margin-bottom: 2rem;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    h1, h2 {
-      color: #0F321C;
-    }
-    form {
+    .testimonial-box {
       background: #ffffff;
-      padding: 1.5rem;
-      border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    label {
-      display: block;
-      margin-top: 1rem;
-      margin-bottom: 0.3rem;
-      font-weight: bold;
-    }
-    input, select, textarea {
-      width: 100%;
-      padding: 0.6rem;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      margin-top: 1.5rem;
-      background-color: #D1E231;
-      color: #0F321C;
-      padding: 0.8rem 1.5rem;
-      border: none;
-      font-weight: bold;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #bccc29;
-    }
-    footer {
-      text-align: center;
+      border-radius: 1rem;
       padding: 1rem;
-      font-size: 0.9rem;
-      color: #555;
-      background-color: #f2f8ec;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    }
+    .testimonial-box p {
+      margin: 0.5rem 0;
+      color: #4e342e;
+    }
+    .stars {
+      color: #fbc02d;
+      font-size: 1.2rem;
+    }
+    .quote {
+      font-style: italic;
+    }
+    .author {
+      text-align: right;
+      margin-top: 0.5rem;
+      font-weight: 500;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img src="Logo - GOE.png" alt="Goodness of Earth logo">
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="contact.html">Contact</a>
-      <a href="routine.html">My Routine</a>
-      <a href="subscribe.html">Subscribe</a>
-    </nav>
-  </header>
-
-  <main style="display: flex; flex-direction: row; align-items: flex-start; gap: 2rem; flex-wrap: wrap;">
-    <h1>Join the Hair Ritual Movement</h1>
-    <div class="highlight">
-      <p><strong>Goodness of Earth</strong> brings you a handcrafted monthly ritual box to support your natural hair journey.</p>
-      <ul>
-        <li>✨ 250ml Hair Oil</li>
-        <li>✨ 500g Herbal Hair Cleanser</li>
-        <li>🪷 Ritual guidance based on your hair goals</li>
-      </ul>
-      <p><strong>Subscription Options:</strong></p>
-      <ul>
-        <li>🗓 Monthly – ₹1000</li>
-        <li>📦 3 Months – ₹2800</li>
-        <li>🌿 12 Months – ₹10000</li>
-      </ul>
-      <p><em>Only limited subscriptions available.</em></p>
-    </div>
-
-    <div class="highlight">
-      <h2>Why Join?</h2>
-      <p><strong>“Hair care is more than just products — it's a practice, a rhythm, a return to self.”</strong></p>
-      <p>Over the past months, I’ve learned that when we consistently nourish our hair with pure, natural ingredients — and commit to simple rituals — transformation follows.</p>
-      <p>This subscription isn’t just a box. It’s your gentle nudge each month to pause, care, and reconnect. Every oil bottle and cleanser is made fresh, by hand, with intention — the way I make it for myself.</p>
-      <p><em>If you’ve been meaning to commit to your hair journey, this is your sign.</em></p>
-      <p>🌿 <strong>Limited spots</strong>. Because every batch is personal.</p>
-    </div>
+  <div class="content">
+    <h1>Join Our Hair Ritual Subscription</h1>
+    <p>
+      Step into a nurturing routine. Our subscription box includes freshly prepared 250ml hair oil and 500g hair cleanser crafted with care. Begin your journey with us:
+    </p>
+    <ul>
+      <li>🪔 Monthly Subscription – ₹1000</li>
+      <li>🌿 3-Month Subscription – ₹2800</li>
+      <li>🌼 Yearly Subscription – ₹10000</li>
+    </ul>
+    <p>Only limited slots available. Made fresh, never in bulk. Experience the ritual, not just the product.</p>
 
     <h2>Register Your Interest</h2>
-    <form action="https://formspree.io/f/yourformid" method="POST">
-      <label for="name">Your Name</label>
-      <input type="text" name="name" id="name" required>
-
-      <label for="email">Email Address</label>
-      <input type="email" name="email" id="email" required>
-
-      <label for="plan">Interested Plan</label>
-      <select name="plan" id="plan" required>
-        <option value="Monthly">Monthly – ₹1000</option>
-        <option value="3 Months">3 Months – ₹2800</option>
-        <option value="12 Months">12 Months – ₹10000</option>
-      </select>
-
-      <label for="message">Anything you'd like to share?</label>
-      <textarea name="message" id="message" rows="4"></textarea>
-
-      <button type="submit">Send Interest</button>
+    <form>
+      <label for="name">Name:</label><br>
+      <input type="text" id="name" name="name"><br><br>
+      <label for="email">Email:</label><br>
+      <input type="email" id="email" name="email"><br><br>
+      <label for="subscription">Subscription Plan:</label><br>
+      <select id="subscription" name="subscription">
+        <option value="monthly">Monthly – ₹1000</option>
+        <option value="3months">3 Months – ₹2800</option>
+        <option value="yearly">1 Year – ₹10000</option>
+      </select><br><br>
+      <input type="submit" value="Register Interest">
     </form>
-  <div style="display: flex; flex-direction: row; gap: 2rem; flex-wrap: wrap;">
-  <div style="flex: 1; min-width: 300px;">
-    <section class="highlight">
-      <h2>What Others Are Saying</h2>
-      <p><strong>⭐️⭐️⭐️⭐️⭐️</strong> “This ritual box has been life-changing! My hair feels softer, and I actually look forward to oiling now.” – <em>Ananya R.</em></p>
-      <p><strong>⭐️⭐️⭐️⭐️⭐️</strong> “Everything smells so natural and fresh. It’s like a spa experience at home.” – <em>Priya K.</em></p>
-      <p><strong>⭐️⭐️⭐️⭐️</strong> “Love the care and quality that goes into each product. My hair feels alive again!” – <em>Meera S.</em></p>
-    </section>
   </div>
-</div>
-</main>
 
-<aside style="flex: 1; min-width: 250px;">
-  <div style="display: flex; flex-direction: column; gap: 1rem;">
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px; background: #fffbe5;">
-      <p><strong>⭐️⭐️⭐️⭐️⭐️</strong><br>“This ritual box has been life-changing! My hair feels softer, and I actually look forward to oiling now.”<br><em>– Ananya R.</em></p>
+  <div class="testimonials">
+    <div class="testimonial-box">
+      <div class="stars">★★★★★</div>
+      <p class="quote">“This ritual brought a calm rhythm to my life. My hair has never felt more nourished.”</p>
+      <p class="author">— Meenakshi R.</p>
     </div>
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px; background: #fffbe5;">
-      <p><strong>⭐️⭐️⭐️⭐️⭐️</strong><br>“Everything smells so natural and fresh. It’s like a spa experience at home.”<br><em>– Priya K.</em></p>
+    <div class="testimonial-box">
+      <div class="stars">★★★★★</div>
+      <p class="quote">“The cleanser feels so fresh and earthy, and the oil is truly magic in a bottle. I’m in love.”</p>
+      <p class="author">— Divya Lakshmi</p>
     </div>
-    <div style="border: 1px solid #ccc; padding: 1rem; border-radius: 10px; background: #fffbe5;">
-      <p><strong>⭐️⭐️⭐️⭐️</strong><br>“Love the care and quality that goes into each product. My hair feels alive again!”<br><em>– Meera S.</em></p>
+    <div class="testimonial-box">
+      <div class="stars">★★★★★</div>
+      <p class="quote">“I used to struggle with hair fall, but after just two months, there’s visible strength and shine.”</p>
+      <p class="author">— Keerthana V.</p>
+    </div>
+    <div class="testimonial-box">
+      <div class="stars">★★★★★</div>
+      <p class="quote">“It’s more than just products — it’s a mindful ritual that makes me feel grounded and beautiful.”</p>
+      <p class="author">— Revathi M.</p>
     </div>
   </div>
-</aside>
-
-  <footer>
-    &copy; 2025 Goodness of Earth. All rights reserved.
-  </footer>
 </body>
 </html>
