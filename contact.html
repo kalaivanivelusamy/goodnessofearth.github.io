@@ -15,8 +15,15 @@
       background-color: #f2f8ec;
       padding: 1rem 2rem;
       display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .header-top {
+      display: flex;
       align-items: center;
       justify-content: space-between;
+      width: 100%;
     }
     header img {
       height: 55px;
@@ -80,6 +87,18 @@
       color: #555;
       font-size: 0.9rem;
     }
+    .branding {
+      margin-top: 1rem;
+    }
+    .branding h1 {
+      margin: 0.25rem 0 0;
+      font-size: 1.8rem;
+    }
+    .branding p {
+      font-size: 0.95rem;
+      color: #4b4b4b;
+      max-width: 500px;
+    }
 
     @media (max-width: 600px) {
       header {
@@ -95,14 +114,20 @@
 <body>
 
   <header>
-    <img src="Logo-GOE.png" alt="Goodness of Earth logo" />
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="routine.html">My Routine</a>
-      <a href="subscribe.html">Subscribe</a>
-      <a href="tracker.html">Hair growth trackers</a>
-      <a href="contact.html">Contact</a>
-    </nav>
+    <div class="header-top">
+      <img src="Logo-GOE.png" alt="Goodness of Earth logo">
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="routine.html">My Routine</a>
+        <a href="subscribe.html">Subscribe</a>
+        <a href="tracker.html">Hair growth trackers</a>
+        <a href="contact.html">Contact</a>
+      </nav>
+    </div>
+    <div class="branding">
+      <h1>Goodness of Earth</h1>
+      <p>Hair care is an Art. Consistency & practice. What you eat reflects on hair.</p>
+    </div>
   </header>
 
   <main>
