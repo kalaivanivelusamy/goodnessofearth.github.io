@@ -6,53 +6,79 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>DIY</title>
   <style>
-    body {
+   body {
       font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #f9f5ec, #ede5d3);
-      color: #0F321C;
       margin: 0;
-      padding: 2rem;
+      background: linear-gradient(to bottom, #ede5d3, #f9f5ec);
+      color: #0F321C;
     }
-
     header {
+      background-color: #f2f8ec;
+      padding: 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       text-align: center;
-      margin-bottom: 2rem;
     }
-
-    h1 {
-      font-size: 2rem;
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
     }
-
-    .herb-list {
-      max-width: 600px;
-      margin: 0 auto;
+    header img {
+      height: 55px;
+      background-color: white;
+      padding: 0.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-
-    .herb-item {
+    nav a {
+      color: #0F321C;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .branding {
+      margin-top: 1rem;
+    }
+    .branding h1 {
+      margin: 0.25rem 0 0;
+      font-size: 1.8rem;
+    }
+    .branding p {
+      font-size: 0.95rem;
+      color: #4b4b4b;
+      max-width: 500px;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    h1, h2 {
+      color: #0F321C;
+    }
+    .routine-block {
       background: #fff;
       padding: 1rem;
       border-radius: 12px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-      margin-bottom: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
     }
-
-    .herb-item h3 {
-      margin: 0 0 0.5rem 0;
-      color: #2f4f4f;
+    .product-img {
+      width: 70%;
+      max-width: 400px;
+      display: block;
+      margin: 1rem auto;
+      border-radius: 8px;
     }
-
-    .herb-item img {
-      max-width: 40%;
-      height: auto;
-      margin-bottom: 0.5rem;
-    }
-
-
-    .note {
-      font-size: 1rem;
-      color: #555;
+    footer {
       text-align: center;
-      margin-top: 2rem;
+      padding: 1rem;
+      background-color: #f2f8ec;
+      color: #555;
+      font-size: 0.9rem;
     }
   </style>
 </head>
