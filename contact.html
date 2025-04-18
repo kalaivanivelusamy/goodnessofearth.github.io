@@ -109,6 +109,13 @@
         margin-top: 1rem;
       }
     }
+    input,
+textarea,
+select,
+button {
+  font-family: inherit;
+  font-size: 1rem; /* or 16px */
+}
   </style>
 </head>
 <body>
@@ -141,7 +148,7 @@
       <input type="email" id="email" name="email" required />
 
       <label for="phone">Phone</label>
-      <input type="tel" name="phone" id="phone" placeholder="+91 98765 43210" pattern="^\+91\s?\d{5}\s?\d{5}$" required inputmode="tel"/>
+      <input type="tel" name="phone" id="phone"  placeholder="Enter 10-digit phone number" pattern="[0-9]{10}" required inputmode="numeric"/>
 
       <label for="message">Message</label>
       <textarea id="message" name="message" rows="5" required></textarea>
