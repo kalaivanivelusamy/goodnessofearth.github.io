@@ -323,8 +323,10 @@
 
                 // Drag and drop for stickers
                 document.addEventListener('dragstart', e => {
-                    if (e.target.classList.contains('sticker')) {
-                        e.dataTransfer.setData('text/html', e.target.innerHTML);
+                    // FIX: Use .closest() to ensure we get the sticker element even if the drag starts on the inner SVG icon.
+                    const sticker = e.target.closest('.sticker');
+                    if (sticker) {
+                        e.dataTransfer.setData('text/html', sticker.innerHTML);
                         e.dataTransfer.effectAllowed = 'copy';
                     }
                 });
