@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Hair Growth Food Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #FDFBF8;
+            color: #4A4A4A;
+        }
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        .tab-button {
+            transition: all 0.3s ease;
+        }
+        .tab-button.active {
+            background-color: #86A397;
+            color: white;
+            font-weight: 600;
+        }
+        .drop-zone {
+            transition: background-color 0.3s ease;
+            min-height: 60px;
+            background-color: #F5F5F5;
+            border-radius: 0.5rem;
+        }
+        .drop-zone.drag-over {
+            background-color: #D1E7DD;
+            outline: 2px dashed #86A397;
+        }
+        .sticker {
+            cursor: grab;
+            transition: transform 0.2s ease;
+            user-select: none;
+        }
+        .sticker:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+        .sticker-in-grid {
+            width: 32px;
+            height: 32px;
+            margin: 2px;
+        }
+        .nutrient-link {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+        .nutrient-link:hover {
+            color: #5A8A78;
+        }
+        /* Hide scrollbar for Chrome, Safari and Opera */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        /* Hide scrollbar for IE, Edge and Firefox */
+        .no-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl md:text-5xl font-display text-[#3D5247]">Hair Growth Food Planner</h1>
+            <p class="text-lg text-gray-500 mt-2">Your interactive guide to healthier hair through nutrition.</p>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+            <button class="tab-button active py-2 px-4 rounded-full" data-tab="tracker">Weekly Tracker</button>
+            <button class="tab-button py-2 px-4 rounded-full" data-tab="stickers">Stickers</button>
+            <button class="tab-button py-2 px-4 rounded-full" data-tab="meal-planner">Meal Planner</button>
+            <button class="tab-button py-2 px-4 rounded-full" data-tab="recipes">Recipes & Food Ideas</button>
+            <button class="tab-button py-2 px-4 rounded-full" data-tab="progress">Progress Journal</button>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main id="main-content">
+
+            <!-- Weekly Tracker Section -->
+            <section id="tracker" class="tab-content">
+                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Weekly Nutrient Intake</h2>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <div class="grid grid-cols-8 gap-2 min-w-[800px]">
+                            <!-- Header Row -->
+                            <div class="font-bold p-2 text-center">Category</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Mon</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Tue</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Wed</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Thu</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Fri</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Sat</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Sun</div>
+                            
+                            <!-- Nutrient Rows -->
+                            <template id="nutrient-row-template">
+                                <div class="font-semibold p-2 flex items-center justify-center text-center rounded-lg bg-emerald-50">
+                                    <a class="nutrient-link font-bold"></a>
+                                </div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="mon"></div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="tue"></div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="wed"></div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="thu"></div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="fri"></div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="sat"></div>
+                                <div class="drop-zone flex flex-wrap items-center justify-center p-1" data-day="sun"></div>
+                            </template>
+
+                            <div id="nutrient-grid" class="col-span-8 grid grid-cols-8 gap-2">
+                                <!-- Nutrient rows will be inserted here by JS -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center mt-6 text-gray-500">
+                        <p>💡 Drag stickers from the 'Stickers' tab and drop them onto the cells!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stickers Section -->
+            <section id="stickers" class="tab-content hidden">
+                 <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Digital Stickers</h2>
+                    <p class="text-center text-gray-500 mb-6">Drag any sticker and drop it onto your weekly tracker.</p>
+                    <div id="sticker-palette" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4">
+                        <!-- Stickers will be inserted here by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Meal Planner Section -->
+            <section id="meal-planner" class="tab-content hidden">
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Weekly Meal Planner</h2>
+                    <div class="overflow-x-auto no-scrollbar">
+                        <div class="grid grid-cols-8 gap-2 min-w-[800px]">
+                            <!-- Header Row -->
+                            <div class="font-bold p-2 text-center">Meal</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Mon</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Tue</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Wed</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Thu</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Fri</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Sat</div>
+                            <div class="font-bold p-2 text-center bg-gray-100 rounded-lg">Sun</div>
+                            
+                            <!-- Meal Rows -->
+                            <template id="meal-row-template">
+                                <div class="font-semibold p-2 flex items-center justify-center text-center rounded-lg bg-amber-50"></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                                <div class="p-1"><textarea class="w-full h-24 p-2 border rounded-md resize-none focus:ring-2 focus:ring-amber-400"></textarea></div>
+                            </template>
+                             <div id="meal-grid" class="col-span-8 grid grid-cols-8 gap-2">
+                                <!-- Meal rows will be inserted here by JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Recipes Section -->
+            <section id="recipes" class="tab-content hidden">
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Recipes & Food Ideas</h2>
+                    <div id="recipe-content" class="space-y-8">
+                        <!-- Recipe sections will be inserted here by JS -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Progress Journal Section -->
+            <section id="progress" class="tab-content hidden">
+                <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Progress Journal</h2>
+                    <div class="grid md:grid-cols-2 gap-8">
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-700">Weekly Notes</h3>
+                            <p class="text-gray-500 mb-3">Record any changes in your hair, energy levels, or anything else you notice.</p>
+                            <textarea class="w-full h-64 p-3 border rounded-lg focus:ring-2 focus:ring-emerald-400" placeholder="This week I noticed..."></textarea>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold mb-3 text-gray-700">Progress Photo</h3>
+                            <p class="text-gray-500 mb-3">Upload a photo to visually track your progress over time.</p>
+                            <input type="file" id="photo-upload" accept="image/*" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-emerald-50 file:text-emerald-700 hover:file:bg-emerald-100"/>
+                            <div class="mt-4 border-2 border-dashed rounded-lg p-4 h-64 flex items-center justify-center bg-gray-50">
+                                <img id="photo-preview" src="" alt="Your uploaded photo will appear here." class="max-h-full max-w-full hidden rounded-lg"/>
+                                <span id="photo-placeholder" class="text-gray-400">Photo Preview</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- DATA ---
+            const nutrients = [
+                { id: 'protein', name: 'Protein', description: 'The building block of hair. Insufficient protein can lead to brittle, weak hair.', examples: 'Chickpeas, rajma, eggs, paneer, chicken, lentils, tofu.' },
+                { id: 'biotin', name: 'Biotin', description: 'A B-vitamin crucial for producing keratin, a protein that makes up hair.', examples: 'Eggs, nuts & seeds, sweet potatoes, avocados, salmon.' },
+                { id: 'omega3', name: 'Omega-3', description: 'These fatty acids nourish hair follicles to improve hair strength and shine.', examples: 'Flaxseeds, chia seeds, walnuts, fatty fish (salmon, mackerel).' },
+                { id: 'iron', name: 'Iron', description: 'Helps red blood cells carry oxygen to your cells, including hair follicles. Deficiency can cause hair loss.', examples: 'Dark leafy greens (spinach), nuts & seeds, legumes, red meat.' },
+                { id: 'zinc', name: 'Zinc', description: 'Plays an important role in hair tissue growth and repair. It also helps keep the oil glands around the follicles working properly.', examples: 'Pumpkin seeds, nuts, dairy, whole grains, beans.' },
+                { id: 'vitaminc', name: 'Vitamin C', description: 'An antioxidant that helps create collagen, an important part of hair structure, and aids in iron absorption.', examples: 'Amla, lemon, oranges, bell peppers, strawberries, broccoli.' },
+                { id: 'hydration', name: 'Hydration', description: 'Essential for overall health and helps to keep your hair moisturized from the inside out.', examples: 'Water, herbal teas, coconut water, water-rich fruits.' },
+            ];
+
+            const stickers = [
+                { id: 'check', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-green-500"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>' },
+                { id: 'egg', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-yellow-400"><path d="M12 2C8.13 2 5 6.47 5 12s3.13 10 7 10 7-4.47 7-12S15.87 2 12 2z"/></svg>' },
+                { id: 'leaf', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-green-600"><path d="M12.383,3.016C9.61,3.23,7.49,5.233,7.06,7.957c-1.248.11-2.422.638-3.333,1.528C2.24,10.875,1.5,12.83,1.5,15c0,3.309,2.691,6,6,6c0,0,0.093,0,0.279-0.02c1.263-0.12,2.1,0.73,2.1,0.73s0.837-0.85,2.1-0.73C12.093,21,12,21,12,21c3.309,0,6-2.691,6-6c0-2.17-1.24-4.125-2.727-5.515c-0.911-0.89-2.085-1.418-3.333-1.528C11.51,5.233,9.39,3.23,6.617,3.016C6.42,2.996,6.225,2.99,6,3C6.225,2.99,12.188,2.996,12.383,3.016z"/></svg>' },
+                { id: 'nut', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-amber-700"><path d="M12,2C9.2,2,6.5,3.8,6.5,6.5S9.2,11,12,11s5.5-2.7,5.5-5.5S14.8,2,12,2z M12,13c-3.3,0-6,2.7-6,6v3h12v-3C18,15.7,15.3,13,12,13z"/></svg>' },
+                { id: 'water', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-blue-500"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>' },
+                { id: 'fish', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-cyan-600"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v2.93zm2-14.93v2h2.09c.12-.37.21-.75.21-1.14 0-1.66-.61-3.18-1.58-4.42L13 3zm-2 0v2H9.21c-.13.37-.21.75-.21 1.14 0 1.66.61 3.18 1.58 4.42L11 11zm7.79 6.21c-.13.58-.21 1.17-.21 1.79 0 4.08-3.05 7.44-7 7.93V15l4.79-4.79c.98 1.24 1.58 2.76 1.58 4.42z"/></svg>' },
+                { id: 'fruit', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-red-500"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>' },
+                { id: 'veg', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-lime-600"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8c4.42 0 8-3.58 8-8 0-2.21-.9-4.2-2.35-5.65zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>' },
+            ];
+
+            const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
+
+            // --- DOM Elements ---
+            const mainContent = document.getElementById('main-content');
+            const tabs = document.querySelectorAll('.tab-button');
+            const nutrientGrid = document.getElementById('nutrient-grid');
+            const stickerPalette = document.getElementById('sticker-palette');
+            const mealGrid = document.getElementById('meal-grid');
+            const recipeContent = document.getElementById('recipe-content');
+            const photoUpload = document.getElementById('photo-upload');
+            const photoPreview = document.getElementById('photo-preview');
+            const photoPlaceholder = document.getElementById('photo-placeholder');
+
+            // --- INITIALIZATION ---
+            function init() {
+                populateNutrientGrid();
+                populateStickers();
+                populateMealPlanner();
+                populateRecipes();
+                setupEventListeners();
+            }
+
+            // --- POPULATE UI ---
+            function populateNutrientGrid() {
+                const template = document.getElementById('nutrient-row-template');
+                nutrients.forEach(nutrient => {
+                    const clone = template.content.cloneNode(true);
+                    const link = clone.querySelector('.nutrient-link');
+                    link.textContent = nutrient.name;
+                    link.href = `#${nutrient.id}`;
+                    link.dataset.tablink = 'recipes';
+                    nutrientGrid.appendChild(clone);
+                });
+            }
+
+            function populateStickers() {
+                stickers.forEach(sticker => {
+                    const stickerEl = document.createElement('div');
+                    stickerEl.id = `sticker-${sticker.id}`;
+                    stickerEl.className = 'sticker w-16 h-16 p-2 bg-gray-100 rounded-lg flex items-center justify-center';
+                    stickerEl.draggable = true;
+                    stickerEl.innerHTML = sticker.svg;
+                    stickerPalette.appendChild(stickerEl);
+                });
+            }
+            
+            function populateMealPlanner() {
+                const template = document.getElementById('meal-row-template');
+                meals.forEach(meal => {
+                    const clone = template.content.cloneNode(true);
+                    clone.querySelector('div').textContent = meal;
+                    mealGrid.appendChild(clone);
+                });
+            }
+
+            function populateRecipes() {
+                nutrients.forEach(nutrient => {
+                    const section = document.createElement('div');
+                    section.id = nutrient.id;
+                    section.className = 'p-6 bg-gray-50 rounded-xl scroll-mt-24';
+                    section.innerHTML = `
+                        <h3 class="text-xl font-bold text-[#5A8A78]">${nutrient.name}</h3>
+                        <p class="mt-2 text-gray-600">${nutrient.description}</p>
+                        <p class="mt-3 font-semibold text-gray-800">Examples: <span class="font-normal text-gray-600">${nutrient.examples}</span></p>
+                    `;
+                    recipeContent.appendChild(section);
+                });
+            }
+
+            // --- EVENT LISTENERS ---
+            function setupEventListeners() {
+                // Tab switching
+                tabs.forEach(tab => {
+                    tab.addEventListener('click', () => switchTab(tab.dataset.tab));
+                });
+
+                // Handle nutrient links to switch to recipes tab
+                document.body.addEventListener('click', function(e) {
+                    if (e.target.matches('.nutrient-link')) {
+                        e.preventDefault();
+                        const tab = e.target.dataset.tablink;
+                        const anchor = e.target.getAttribute('href');
+                        switchTab(tab, () => {
+                            document.querySelector(anchor).scrollIntoView({ behavior: 'smooth' });
+                        });
+                    }
+                });
+
+                // Drag and drop for stickers
+                document.addEventListener('dragstart', e => {
+                    if (e.target.classList.contains('sticker')) {
+                        e.dataTransfer.setData('text/html', e.target.innerHTML);
+                        e.dataTransfer.effectAllowed = 'copy';
+                    }
+                });
+
+                const dropZones = document.querySelectorAll('.drop-zone');
+                dropZones.forEach(zone => {
+                    zone.addEventListener('dragover', e => {
+                        e.preventDefault();
+                        zone.classList.add('drag-over');
+                    });
+                    zone.addEventListener('dragleave', () => {
+                        zone.classList.remove('drag-over');
+                    });
+                    zone.addEventListener('drop', e => {
+                        e.preventDefault();
+                        zone.classList.remove('drag-over');
+                        const stickerHTML = e.dataTransfer.getData('text/html');
+                        const stickerEl = document.createElement('div');
+                        stickerEl.className = 'sticker-in-grid';
+                        stickerEl.innerHTML = stickerHTML;
+                        zone.appendChild(stickerEl);
+                    });
+                });
+                
+                // Photo preview
+                photoUpload.addEventListener('change', () => {
+                    const file = photoUpload.files[0];
+                    if (file) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            photoPreview.src = e.target.result;
+                            photoPreview.classList.remove('hidden');
+                            photoPlaceholder.classList.add('hidden');
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // --- FUNCTIONS ---
+            function switchTab(tabId, callback) {
+                // Hide all content
+                mainContent.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.add('hidden');
+                });
+                // Deactivate all buttons
+                tabs.forEach(button => {
+                    button.classList.remove('active');
+                });
+
+                // Show selected content and activate button
+                document.getElementById(tabId).classList.remove('hidden');
+                document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
+                
+                if(callback) callback();
+            }
+
+            // --- RUN ---
+            init();
+        });
+    </script>
+</body>
+</html>
