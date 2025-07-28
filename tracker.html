@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Hair Growth Food Planner</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" xintegrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
     <style>
         body {
@@ -67,6 +66,17 @@
     </style>
 </head>
 <body class="antialiased">
+     <div class="header-top">
+          <img src="Logo-GOE.png" alt="Goodness of Earth logo">
+          <nav>
+            <a href="index.html">Home</a>
+            <a href="routine.html">My Routine</a>
+            <a href="subscribe.html">Subscribe</a>
+            <a href="DIY.html">Do It Yourself</a>
+            <a href="tracker.html">Hair growth trackers</a>
+            <a href="contact.html">Contact</a>
+          </nav>
+        </div>
 
     <div class="container mx-auto p-4 md:p-8 max-w-7xl">
         
@@ -74,12 +84,12 @@
         <header class="text-center mb-8">
             <h1 class="text-4xl md:text-5xl font-display text-[#3D5247]">Hair Growth Food Planner</h1>
             <p class="text-lg text-gray-500 mt-2">Your interactive guide to healthier hair through nutrition.</p>
-            <button id="download-pdf" class="mt-4 bg-[#86A397] text-white py-2 px-6 rounded-full font-semibold hover:bg-[#5A8A78] transition-colors">Download Tracker as PDF</button>
         </header>
 
         <!-- Navigation Tabs -->
         <nav class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
             <button class="tab-button active py-2 px-4 rounded-full" data-tab="tracker">Weekly Tracker</button>
+            <button class="tab-button py-2 px-4 rounded-full" data-tab="stickers">Stickers</button>
             <button class="tab-button py-2 px-4 rounded-full" data-tab="meal-planner">Meal Planner</button>
             <button class="tab-button py-2 px-4 rounded-full" data-tab="recipes">Recipes & Food Ideas</button>
             <button class="tab-button py-2 px-4 rounded-full" data-tab="progress">Progress Journal</button>
@@ -91,17 +101,7 @@
             <!-- Weekly Tracker Section -->
             <section id="tracker" class="tab-content">
                 <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-lg">
-                    <h2 class="text-2xl font-bold text-center mb-4 text-[#3D5247]">Weekly Nutrient Intake</h2>
-                    
-                    <!-- Sticker Palette -->
-                    <div class="mb-6 p-4 bg-emerald-50 rounded-xl">
-                        <h3 class="text-lg font-semibold text-center mb-3 text-[#3D5247]">Sticker Palette</h3>
-                        <p class="text-center text-gray-500 mb-4 text-sm">Drag a sticker and drop it onto a cell below.</p>
-                        <div id="sticker-palette" class="flex flex-wrap justify-center items-center gap-3">
-                            <!-- Stickers will be inserted here by JS -->
-                        </div>
-                    </div>
-
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Weekly Nutrient Intake</h2>
                     <div class="overflow-x-auto no-scrollbar">
                         <div class="grid grid-cols-8 gap-2 min-w-[800px]">
                             <!-- Header Row -->
@@ -132,6 +132,20 @@
                                 <!-- Nutrient rows will be inserted here by JS -->
                             </div>
                         </div>
+                    </div>
+                    <div class="text-center mt-6 text-gray-500">
+                        <p>💡 Drag stickers from the 'Stickers' tab and drop them onto the cells!</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Stickers Section -->
+            <section id="stickers" class="tab-content hidden">
+                 <div class="bg-white p-6 rounded-2xl shadow-lg">
+                    <h2 class="text-2xl font-bold text-center mb-6 text-[#3D5247]">Digital Stickers</h2>
+                    <p class="text-center text-gray-500 mb-6">Drag any sticker and drop it onto your weekly tracker.</p>
+                    <div id="sticker-palette" class="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-10 gap-4">
+                        <!-- Stickers will be inserted here by JS -->
                     </div>
                 </div>
             </section>
@@ -220,8 +234,14 @@
             ];
 
             const stickers = [
-                { id: 'check', name: 'Tick', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-green-500"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>' },
-                { id: 'cross', name: 'Cross', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-red-500"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zm-1.72 6.97a.75.75 0 10-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 101.06 1.06L12 13.06l1.72 1.72a.75.75 0 101.06-1.06L13.06 12l1.72-1.72a.75.75 0 10-1.06-1.06L12 10.94l-1.72-1.72z" clip-rule="evenodd" /></svg>' },
+                { id: 'check', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-green-500"><path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" /></svg>' },
+                { id: 'egg', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-yellow-400"><path d="M12 2C8.13 2 5 6.47 5 12s3.13 10 7 10 7-4.47 7-12S15.87 2 12 2z"/></svg>' },
+                { id: 'leaf', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-green-600"><path d="M12.383,3.016C9.61,3.23,7.49,5.233,7.06,7.957c-1.248.11-2.422.638-3.333,1.528C2.24,10.875,1.5,12.83,1.5,15c0,3.309,2.691,6,6,6c0,0,0.093,0,0.279-0.02c1.263-0.12,2.1,0.73,2.1,0.73s0.837-0.85,2.1-0.73C12.093,21,12,21,12,21c3.309,0,6-2.691,6-6c0-2.17-1.24-4.125-2.727-5.515c-0.911-0.89-2.085-1.418-3.333-1.528C11.51,5.233,9.39,3.23,6.617,3.016C6.42,2.996,6.225,2.99,6,3C6.225,2.99,12.188,2.996,12.383,3.016z"/></svg>' },
+                { id: 'nut', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-amber-700"><path d="M12,2C9.2,2,6.5,3.8,6.5,6.5S9.2,11,12,11s5.5-2.7,5.5-5.5S14.8,2,12,2z M12,13c-3.3,0-6,2.7-6,6v3h12v-3C18,15.7,15.3,13,12,13z"/></svg>' },
+                { id: 'water', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-blue-500"><path fill-rule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25zM12.75 6a.75.75 0 00-1.5 0v6c0 .414.336.75.75.75h4.5a.75.75 0 000-1.5h-3.75V6z" clip-rule="evenodd" /></svg>' },
+                { id: 'fish', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-cyan-600"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v2.93zm2-14.93v2h2.09c.12-.37.21-.75.21-1.14 0-1.66-.61-3.18-1.58-4.42L13 3zm-2 0v2H9.21c-.13.37-.21.75-.21 1.14 0 1.66.61 3.18 1.58 4.42L11 11zm7.79 6.21c-.13.58-.21 1.17-.21 1.79 0 4.08-3.05 7.44-7 7.93V15l4.79-4.79c.98 1.24 1.58 2.76 1.58 4.42z"/></svg>' },
+                { id: 'fruit', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-red-500"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>' },
+                { id: 'veg', svg: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-full h-full text-lime-600"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-8 3.58-8 8s3.58 8 8 8c4.42 0 8-3.58 8-8 0-2.21-.9-4.2-2.35-5.65zM12 18c-3.31 0-6-2.69-6-6s2.69-6 6-6 6 2.69 6 6-2.69 6-6 6z"/></svg>' },
             ];
 
             const meals = ['Breakfast', 'Lunch', 'Dinner', 'Snacks'];
@@ -236,7 +256,6 @@
             const photoUpload = document.getElementById('photo-upload');
             const photoPreview = document.getElementById('photo-preview');
             const photoPlaceholder = document.getElementById('photo-placeholder');
-            const downloadPdfBtn = document.getElementById('download-pdf');
 
             // --- INITIALIZATION ---
             function init() {
@@ -264,9 +283,8 @@
                 stickers.forEach(sticker => {
                     const stickerEl = document.createElement('div');
                     stickerEl.id = `sticker-${sticker.id}`;
-                    stickerEl.className = 'sticker w-14 h-14 p-2 bg-gray-100 rounded-lg flex items-center justify-center';
+                    stickerEl.className = 'sticker w-16 h-16 p-2 bg-gray-100 rounded-lg flex items-center justify-center';
                     stickerEl.draggable = true;
-                    stickerEl.title = sticker.name; // Add tooltip on hover
                     stickerEl.innerHTML = sticker.svg;
                     stickerPalette.appendChild(stickerEl);
                 });
@@ -302,19 +320,6 @@
                     tab.addEventListener('click', () => switchTab(tab.dataset.tab));
                 });
 
-                // PDF Download
-                downloadPdfBtn.addEventListener('click', () => {
-                    const element = document.getElementById('tracker');
-                    const opt = {
-                      margin:       0.5,
-                      filename:     'HairGrowthFoodPlanner.pdf',
-                      image:        { type: 'jpeg', quality: 0.98 },
-                      html2canvas:  { scale: 2, useCORS: true },
-                      jsPDF:        { unit: 'in', format: 'letter', orientation: 'landscape' }
-                    };
-                    html2pdf().set(opt).from(element).save();
-                });
-
                 // Handle nutrient links to switch to recipes tab
                 document.body.addEventListener('click', function(e) {
                     if (e.target.matches('.nutrient-link')) {
@@ -329,6 +334,7 @@
 
                 // Drag and drop for stickers
                 document.addEventListener('dragstart', e => {
+                    // FIX: Use .closest() to ensure we get the sticker element even if the drag starts on the inner SVG icon.
                     const sticker = e.target.closest('.sticker');
                     if (sticker) {
                         e.dataTransfer.setData('text/html', sticker.innerHTML);
@@ -373,13 +379,16 @@
 
             // --- FUNCTIONS ---
             function switchTab(tabId, callback) {
+                // Hide all content
                 mainContent.querySelectorAll('.tab-content').forEach(content => {
                     content.classList.add('hidden');
                 });
+                // Deactivate all buttons
                 tabs.forEach(button => {
                     button.classList.remove('active');
                 });
 
+                // Show selected content and activate button
                 document.getElementById(tabId).classList.remove('hidden');
                 document.querySelector(`.tab-button[data-tab="${tabId}"]`).classList.add('active');
                 
