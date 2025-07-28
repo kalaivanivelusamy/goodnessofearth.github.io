@@ -1,546 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Goodness of Earth - Standalone</title>
-    
-    <!-- Tailwind CSS for styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-    
-    <!-- React Libraries -->
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    
-    <!-- Babel to transpile JSX in the browser -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EMK8GCX271"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-    <!-- Custom Styles -->
-    <style>
-        body { font-family: 'Poppins', sans-serif; background-color: #FBF9F6; color: #4A4A4A; }
-        .font-serif { font-family: 'Lora', serif; }
-        .bg-earth-green { background-color: #5A8A78; }
-        .text-earth-green { color: #5A8A78; }
-        .border-earth-green { border-color: #5A8A78; }
-        .bg-earth-light { background-color: #FBF9F6; }
-        .bg-earth-soft { background-color: #EAE7E2; }
-        .text-earth-dark { color: #3D5247; }
-        .section-title { font-family: 'Lora', serif; font-size: 2.5rem; font-weight: 600; }
-        .tracker-preview { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.07); }
-        .calendar-day { min-height: 100px; }
-        .calendar-day.selected { border: 2px solid #5A8A78; background-color: #F0F5F3; }
-    </style>
+  gtag('config', 'G-EMK8GCX271');
+</script>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Goodness of Earth</title>
+  <style>
+    /* Responsive hamburger styles */
+    .menu-toggle {
+      display: none;
+      flex-direction: column;
+      cursor: pointer;
+    }
+    .menu-toggle span {
+      background: #0F321C;
+      margin: 4px 0;
+      width: 25px;
+      height: 3px;
+      display: block;
+    }
+    nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      align-items: center;
+    }
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: flex;
+      }
+      nav {
+        flex-direction: column;
+        width: 100%;
+        display: none;
+      }
+      nav.show {
+        display: flex;
+      }
+      nav a {
+        margin: 0.5rem 0;
+      }
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: linear-gradient(to bottom, #ede5d3, #f9f5ec);
+      color: #0F321C;
+    }
+    header {
+      background-color: #f2f8ec;
+      padding: 1rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    header img {
+      height: 55px;
+      background-color: white;
+      padding: 0.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    nav a {
+      color: #0F321C;
+      margin-left: 1rem;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .branding {
+      margin-top: 1rem;
+    }
+    .branding h1 {
+      margin: 0.25rem 0 0;
+      font-size: 1.8rem;
+    }
+    .branding p {
+      font-size: 0.95rem;
+      color: #4b4b4b;
+      max-width: 500px;
+    }
+    h1.section-title {
+      text-align: center;
+      color: #0F321C;
+      margin-top: 2rem;
+    }
+    .product {
+      max-width: 900px;
+      margin: 2rem auto;
+      display: flex;
+      flex-direction: row;
+      background-color: rgba(255, 255, 255, 0.95);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    .product img {
+      width: 40%;
+      object-fit: contain;
+      border-right: 1px solid #eee;
+    }
+    .product-content {
+      padding: 1.5rem;
+      flex: 1;
+    }
+    .product h2 {
+      margin-top: 0;
+      color: #0F321C;
+    }
+    .description, .how-to-use {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+    }
+    .reviews {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .review-box {
+      background-color: #f9f5ec;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    .review-date {
+      font-size: 0.85rem;
+      color: #777;
+      margin-top: 0.5rem;
+    }
+    .buy-button {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background-color: #D1E231;
+      color: #0F321C;
+      text-decoration: none;
+      font-weight: bold;
+      border-radius: 5px;
+      transition: background-color 0.3s;
+    }
+    .buy-button:hover {
+      background-color: #c0cc28;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #f2f8ec;
+      color: #555;
+      font-size: 0.9rem;
+    }
+    @media (max-width: 768px) {
+      .product {
+        flex-direction: column;
+      }
+      .product img {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #eee;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div id="root"></div>
+  <header>
+    <div class="header-top">
+      <!-- <div class="menu-toggle" onclick="toggleMenu()">
+        <span></span><span></span><span></span>
+      </div> -->
+      <img src="Logo-GOE.png" alt="Goodness of Earth logo">
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="tracker.html">Planner</a>
+        <a href="routine.html">My Routine</a>
+       <!--  <a href="subscribe.html">Subscribe</a>
+        <a href="DIY.html">Do It Yourself</a>
+        <a href="tracker.html">Hair growth trackers</a>
+        <a href="contact.html">Contact</a>
+       -->
+      </nav>
+<script>
+function toggleMenu() {
+  const nav = document.querySelector("nav");
+  nav.classList.toggle("show");
+}
+</script>
+    </div>
+    <div class="branding">
+      <h1>Goodness of Earth</h1>
+      <p>Hair care is an Art. Consistency & practice. What you eat reflects on hair.</p>
+    </div>
+  </header>
 
-    <script type="text/babel">
-        // --- Firebase Imports ---
-        // Note: These are ES Module imports, which are now supported in modern browsers with type="module"
-        // For this single-file export, we'll use the global `firebase` object from a CDN script.
-        // See the script tags in the body for Firebase services.
-        
-        const { useState, useEffect } = React;
+  <main>
+    <h1 class="section-title">Our Hair Care Products</h1>
 
-        // --- FIREBASE CONFIGURATION ---
-        // IMPORTANT: Replace these placeholder values with your actual Firebase project configuration!
-        // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-    const firebaseConfig = {
-    apiKey: "AIzaSyCZDMtXqJX09I4eNsUzA05HnO5sFs0_DV0",
-    authDomain: "goodness-of-earth.firebaseapp.com",
-    projectId: "goodness-of-earth",
-    storageBucket: "goodness-of-earth.firebasestorage.app",
-    messagingSenderId: "698371094980",
-    appId: "1:698371094980:web:9cd8e8d5532ccf9d1b4c91",
-    measurementId: "G-C4GB9SPKFH"
-    };
-        const appId = 'goodness-of-earth-app'; // You can keep this as a static ID
+    <section class="product">
+      <img src="cleanser.png" alt="Hair Cleanser">
+      <div class="product-content">
+        <h2>Shikakai Hair Cleanser</h2>
+        <div class="description">
+          <strong>Description:</strong> This handcrafted blend features sun-dried shikakai, reetha, and hibiscus. A gentle, natural cleanser that restores your scalp’s balance and supports shiny, strong hair.
+        </div>
+        <div class="how-to-use">
+          <strong>How to Use:</strong> Mix 1-2 tablespoons with water to make a paste. Apply to scalp and hair, gently massage for 3–5 minutes, then rinse thoroughly.
+        </div>
+        <div class="reviews">
+          <div class="review-box">
+            ⭐️⭐️⭐️⭐️⭐️ - "Made my hair feel fresh and soft."
+            <div class="review-date">09 April 2025</div>
+          </div>
+          <div class="review-box">
+            ⭐️⭐️⭐️⭐️ - "Lovely scent and no itchiness."
+            <div class="review-date">08 April 2025</div>
+          </div>
+          <div class="review-box">
+            ⭐️⭐️⭐️⭐️⭐️ - "Perfect for my weekly wash routine."
+            <div class="review-date">07 April 2025</div>
+          </div>
+        </div>
+        <a href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcpcmjbhsO" class="buy-button">Buy Now</a>
+      </div>
+    </section>
+  <section class="product">
+  <img src="oil.png" alt="Hair Oil">
+  <div class="product-content">
+    <h2>Back to Roots Hair Oil</h2>
+    <div class="description">
+      <strong>Description:</strong> A deeply nourishing blend of coconut oil, curry leaves, amla, and hibiscus. This hand-crafted oil promotes hair growth, reduces hair fall, and restores scalp health.
+    </div>
+    <div class="how-to-use">
+      <strong>How to Use:</strong> Warm a small amount of oil and massage into the scalp. Leave for at least 1 hour before washing. Use 2–3 times a week for best results.
+    </div>
+    <div class="reviews">
+      <div class="review-box">
+        ⭐️⭐️⭐️⭐️⭐️ - "My hair fall has significantly reduced!"
+        <div class="review-date">09 April 2025</div>
+      </div>
+      <div class="review-box">
+        ⭐️⭐️⭐️⭐️ - "Smells great and leaves my hair shiny."
+        <div class="review-date">08 April 2025</div>
+      </div>
+      <div class="review-box">
+        ⭐️⭐️⭐️⭐️⭐️ - "Feels like an authentic traditional oil."
+        <div class="review-date">06 April 2025</div>
+      </div>
+    </div>
+    <a href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcVoNbTIa7" class="buy-button">Buy Now</a>
+  </div>
+</section>
+</main>
 
-        // --- Initialize Firebase ---
-        const app = firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth();
-        const db = firebase.firestore();
-
-        // --- HELPER & UI COMPONENTS ---
-        const NavLink = ({ children, onClick }) => (
-          <a href="#" onClick={onClick} className="text-gray-600 hover:text-earth-green transition">{children}</a>
-        );
-
-        const PrimaryButton = ({ children, onClick, className = '' }) => (
-          <a href="#" onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
-            {children}
-          </a>
-        );
-
-        const SecondaryButton = ({ children, onClick, className = '' }) => (
-            <button onClick={onClick} className={`bg-earth-soft text-earth-dark py-2 px-4 rounded-full font-semibold hover:bg-gray-300 transition ${className}`}>
-                {children}
-            </button>
-        );
-
-        // --- DATA ---
-        const nutrientsList = [
-            { name: 'Protein', examples: 'Chickpeas, eggs, paneer', color: 'bg-red-400' },
-            { name: 'Biotin', examples: 'Eggs, nuts, sweet potatoes', color: 'bg-blue-400' },
-            { name: 'Omega-3', examples: 'Chia seeds, flaxseeds, walnuts', color: 'bg-indigo-400' },
-            { name: 'Iron', examples: 'Dark leafy greens, nuts, legumes', color: 'bg-pink-400' },
-            { name: 'Zinc', examples: 'Pumpkin seeds, nuts, dairy', color: 'bg-yellow-400' },
-            { name: 'Vitamin C', examples: 'Amla, lemon, oranges, berries', color: 'bg-orange-400' },
-            { name: 'Hydration', examples: 'Water, herbal teas, coconut water', color: 'bg-cyan-400' },
-        ];
-        const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-
-        // --- UTILITY FUNCTIONS ---
-        const getStartOfWeek = (date) => {
-            const d = new Date(date);
-            d.setHours(0, 0, 0, 0);
-            const day = d.getDay();
-            const diff = d.getDate() - day + (day === 0 ? -6 : 1);
-            return new Date(d.setDate(diff));
-        };
-
-        // --- CORE APP COMPONENTS ---
-        const App = () => {
-            const [currentPage, setCurrentPage] = useState('home');
-            const [user, setUser] = useState(null);
-            const [userData, setUserData] = useState({ name: 'Guest' });
-            const [grid, setGrid] = useState({});
-            const [authReady, setAuthReady] = useState(false);
-
-            useEffect(() => {
-                const unsubscribe = auth.onAuthStateChanged(async (currentUser) => {
-                    if (currentUser) {
-                        setUser(currentUser);
-                        if (!currentUser.isAnonymous) {
-                            const profileDocRef = db.collection(`artifacts/${appId}/users`).doc(currentUser.uid).collection('profile').doc('main');
-                            profileDocRef.onSnapshot((docSnap) => {
-                                if (docSnap.exists) setUserData(docSnap.data());
-                            });
-                            
-                            const trackerDocRef = db.collection(`artifacts/${appId}/users`).doc(currentUser.uid).collection('trackerData').doc('main');
-                            trackerDocRef.onSnapshot((docSnap) => {
-                                if (docSnap.exists) setGrid(docSnap.data().grid || {});
-                            });
-                        }
-                    } else {
-                        try {
-                            await auth.signInAnonymously();
-                        } catch (error) { console.error("Authentication failed:", error); }
-                    }
-                    setAuthReady(true);
-                });
-                return () => unsubscribe();
-            }, []);
-
-            useEffect(() => {
-                if (!user || user.isAnonymous || Object.keys(grid).length === 0) return;
-                const docRef = db.collection(`artifacts/${appId}/users`).doc(user.uid).collection('trackerData').doc('main');
-                docRef.set({ grid }, { merge: true }).catch(err => console.error("Error saving data:", err));
-            }, [grid, user]);
-
-            const navigateTo = (page) => (e) => {
-                if (e) e.preventDefault();
-                setCurrentPage(page);
-            };
-
-            const handleSignUp = async (name, email, uid) => {
-                const profileData = { name, email };
-                setUserData(profileData);
-                const userDocRef = db.collection(`artifacts/${appId}/users`).doc(uid).collection('profile').doc('main');
-                await userDocRef.set(profileData);
-                navigateTo('onboarding')();
-            };
-
-            if (!authReady) {
-                return <div className="flex justify-center items-center h-screen">Loading...</div>;
-            }
-
-            const renderPage = () => {
-                switch (currentPage) {
-                    case 'signup': return <SignUpPage navigateTo={navigateTo} onSignUp={handleSignUp} />;
-                    case 'onboarding': return <OnboardingPage navigateTo={navigateTo} />;
-                    case 'dashboard': return <DashboardPage navigateTo={navigateTo} userData={userData} user={user} grid={grid} setGrid={setGrid} />;
-                    case 'shop': return <ShopPage navigateTo={navigateTo} />;
-                    default: return <HomePage navigateTo={navigateTo} user={user} grid={grid} />;
-                }
-            };
-
-            return (
-                <div className="font-sans bg-earth-light">
-                    <Header navigateTo={navigateTo} user={user} userData={userData} />
-                    <main>{renderPage()}</main>
-                    <Footer navigateTo={navigateTo} />
-                </div>
-            );
-        };
-
-        const Header = ({ navigateTo, user, userData }) => (
-            <header className="bg-earth-light sticky top-0 z-50 shadow-sm">
-                <div className="container mx-auto px-6 py-4 flex justify-between items-center">
-                    <a href="#" onClick={navigateTo('home')} className="text-2xl font-serif font-bold text-earth-dark">Goodness of Earth</a>
-                    <nav className="hidden md:flex items-center space-x-8">
-                        <NavLink onClick={navigateTo('home')}>Home</NavLink>
-                        <NavLink onClick={navigateTo('dashboard')}>Dashboard</NavLink>
-                        <NavLink onClick={navigateTo('shop')}>Shop</NavLink>
-                        {user && !user.isAnonymous ? (
-                            <span className="font-semibold text-earth-dark">Hi, {userData.name}</span>
-                        ) : (
-                            <a href="#" onClick={navigateTo('signup')} className="bg-earth-green text-white py-2 px-6 rounded-full font-semibold hover:bg-opacity-90 transition">Sign Up</a>
-                        )}
-                    </nav>
-                </div>
-            </header>
-        );
-
-        const HomePage = ({ navigateTo, user, grid }) => (
-            <>
-                <section className="bg-earth-light py-20">
-                    <div className="container mx-auto px-6 text-center">
-                        <h1 className="text-4xl md:text-6xl font-serif font-bold text-earth-dark leading-tight">Nourish Your Hair, Naturally.</h1>
-                        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Discover the power of nutrition to transform your hair. Goodness of Earth is your personal web platform for achieving the healthy, vibrant hair you've always wanted.</p>
-                        <div className="mt-8 flex justify-center gap-4">
-                            {user && !user.isAnonymous ? (
-                                <PrimaryButton onClick={navigateTo('dashboard')}>Track Your Hair Care Rituals</PrimaryButton>
-                            ) : (
-                                <PrimaryButton onClick={navigateTo('signup')}>Start Your Journey</PrimaryButton>
-                            )}
-                        </div>
-                    </div>
-                </section>
-                {user && !user.isAnonymous && <MonthlyGraph grid={grid} />}
-            </>
-        );
-
-        const MonthlyGraph = ({ grid }) => {
-            const [graphData, setGraphData] = useState([]);
-
-            useEffect(() => {
-                const today = new Date();
-                const year = today.getFullYear();
-                const month = today.getMonth();
-                const daysInMonth = new Date(year, month + 1, 0).getDate();
-                
-                const data = nutrientsList.map(nutrient => {
-                    let count = 0;
-                    for (let day = 1; day <= daysInMonth; day++) {
-                        const dateKey = new Date(year, month, day).toISOString().split('T')[0];
-                        if (grid[dateKey]?.[nutrient.name]) {
-                            count++;
-                        }
-                    }
-                    return {
-                        name: nutrient.name,
-                        percentage: Math.round((count / daysInMonth) * 100),
-                        color: nutrient.color
-                    };
-                });
-                setGraphData(data);
-            }, [grid]);
-
-            return (
-                <section className="py-20 bg-white">
-                    <div className="container mx-auto px-6">
-                        <div className="text-center mb-12">
-                            <h2 className="section-title text-earth-dark">Your Monthly Progress</h2>
-                            <p className="mt-4 text-gray-600 max-w-2xl mx-auto">A snapshot of your nutritional consistency for the current month. Keep up the great work!</p>
-                        </div>
-                        <div className="tracker-preview p-8">
-                            <div className="space-y-4">
-                                {graphData.map(item => (
-                                    <div key={item.name} className="flex items-center">
-                                        <span className="w-28 font-semibold text-gray-700">{item.name}</span>
-                                        <div className="flex-1 bg-gray-200 rounded-full h-6">
-                                            <div className={`${item.color} h-6 rounded-full flex items-center justify-end pr-2 text-white font-bold text-sm`} style={{ width: `${item.percentage}%` }}>
-                                                {item.percentage > 10 && `${item.percentage}%`}
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </section>
-            );
-        };
-
-        const SignUpPage = ({ navigateTo, onSignUp }) => {
-            const [name, setName] = useState('');
-            const [email, setEmail] = useState('');
-            const [password, setPassword] = useState('');
-            const [error, setError] = useState('');
-
-            const handleSubmit = async (e) => { 
-                e.preventDefault(); 
-                setError('');
-                try {
-                    const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                    onSignUp(name, email, userCredential.user.uid);
-                } catch (err) {
-                    setError(err.message.replace('Firebase: ', ''));
-                }
-            };
-            return (
-                <div className="py-20 bg-white">
-                    <div className="container mx-auto px-6 max-w-md text-center">
-                        <h2 className="section-title text-earth-dark mb-4">Create Your Account</h2>
-                        <p className="text-gray-600 mb-8">Join the Goodness of Earth community and start your journey to healthier hair today.</p>
-                        {error && <p className="text-red-500 mb-4 bg-red-100 p-3 rounded-lg">{error}</p>}
-                        <form className="text-left space-y-4" onSubmit={handleSubmit}>
-                            <div>
-                                <label className="font-semibold text-gray-700">Full Name</label>
-                                <input type="text" placeholder="Jane Doe" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
-                            </div>
-                            <div>
-                                <label className="font-semibold text-gray-700">Email Address</label>
-                                <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
-                            </div>
-                            <div>
-                                <label className="font-semibold text-gray-700">Password</label>
-                                <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
-                            </div>
-                            <button type="submit" className="w-full bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg">Create Free Account</button>
-                        </form>
-                    </div>
-                </div>
-            );
-        };
-
-        const OnboardingPage = ({ navigateTo }) => (
-            <div className="py-20 bg-white">
-                <div className="container mx-auto px-6 max-w-lg text-center">
-                    <h2 className="section-title text-earth-dark mb-4">Personalize Your Plan</h2>
-                    <p className="text-gray-600 mb-8">A few questions to tailor your experience.</p>
-                    <div className="bg-white p-8 rounded-2xl shadow-lg border-2 border-earth-soft text-left">
-                        <p>Onboarding quiz would go here...</p>
-                        <button onClick={navigateTo('dashboard')} className="w-full mt-6 bg-earth-green text-white py-3 rounded-full font-semibold hover:bg-opacity-90">Finish & Go to Dashboard</button>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const NutrientSummary = ({ grid, selectedDate }) => {
-            if (!selectedDate) return null;
-            const dateKey = selectedDate.toISOString().split('T')[0];
-            const summaryData = nutrientsList.map(nutrient => ({
-                name: nutrient.name,
-                percentage: (grid[dateKey]?.[nutrient.name] || false) ? 100 : 0
-            }));
-
-            return (
-                <div className="tracker-preview p-8 mb-8">
-                    <h3 className="text-2xl font-serif text-earth-dark mb-6">Nutrient Summary for {selectedDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</h3>
-                    <div className="grid md:grid-cols-3 lg:grid-cols-7 gap-6">
-                        {summaryData.map(item => (
-                            <div key={item.name} className="text-center">
-                                <div className="relative w-24 h-24 md:w-32 md:h-32 mx-auto">
-                                    <svg className="w-full h-full" viewBox="0 0 36 36">
-                                        <path className="text-gray-200" strokeWidth="3" fill="none" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                        <path className={item.percentage === 100 ? "text-earth-green" : "text-red-400"} strokeWidth="3" strokeDasharray={`${item.percentage}, 100`} fill="none" d="M18 2.0845a 15.9155 15.9155 0 0 1 0 31.831a 15.9155 15.9155 0 0 1 0 -31.831" />
-                                    </svg>
-                                    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 font-bold text-xl text-earth-dark">{item.percentage}%</div>
-                                </div>
-                                <p className="mt-3 font-semibold text-gray-700 text-sm md:text-base">{item.name}</p>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            );
-        };
-
-        const WeeklyTracker = ({ grid, setGrid, currentWeek, setSelectedDate }) => {
-            const today = new Date(); today.setHours(0, 0, 0, 0);
-            const weekDates = daysOfWeek.map((_, i) => { const d = new Date(currentWeek); d.setDate(d.getDate() + i); return d; });
-
-            const toggleCell = (date, nutrientName) => {
-                const dateKey = date.toISOString().split('T')[0];
-                setGrid(prev => ({ ...prev, [dateKey]: { ...(prev[dateKey] || {}), [nutrientName]: !(prev[dateKey]?.[nutrientName] || false) } }));
-            };
-
-            return (
-                <div className="tracker-preview p-6">
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-left border-collapse">
-                            <thead>
-                                <tr>
-                                    <th className="p-3 font-semibold text-gray-700 bg-earth-soft rounded-tl-lg">Category</th>
-                                    <th className="p-3 font-semibold text-gray-700 bg-earth-soft">Examples</th>
-                                    {weekDates.map((date, i) => (
-                                        <th key={i} className="p-3 font-semibold text-gray-700 bg-earth-soft text-center">
-                                            <div>{daysOfWeek[i]}</div><div className="text-xs font-normal">{date.getDate()}</div>
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {nutrientsList.map(nutrient => (
-                                    <tr key={nutrient.name} className="border-b border-gray-200">
-                                        <td className="p-3 font-bold text-earth-dark">{nutrient.name}</td>
-                                        <td className="p-3 text-sm text-gray-500">{nutrient.examples}</td>
-                                        {weekDates.map((date, i) => {
-                                            const isFuture = date > today;
-                                            const dateKey = date.toISOString().split('T')[0];
-                                            const isComplete = grid[dateKey]?.[nutrient.name] || false;
-                                            return (
-                                                <td key={i} className="p-3 text-center">
-                                                    <button onClick={() => { toggleCell(date, nutrient.name); setSelectedDate(date); }} disabled={isFuture} className={`w-10 h-10 rounded-lg flex items-center justify-center mx-auto transition ${isComplete ? 'bg-green-100' : 'bg-red-100'} ${isFuture ? 'opacity-50 cursor-not-allowed' : 'hover:bg-gray-200'}`}>
-                                                        {isComplete ? <span className="text-earth-green text-2xl">✔</span> : <span className="text-red-500 text-xl">❌</span>}
-                                                    </button>
-                                                </td>
-                                            );
-                                        })}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            );
-        };
-
-        const MonthlyOverview = ({ grid, currentMonth, setView, setCurrentWeek }) => {
-            const [calendar, setCalendar] = useState([]);
-            
-            useEffect(() => {
-                const year = currentMonth.getFullYear(); const month = currentMonth.getMonth();
-                const firstDay = new Date(year, month, 1).getDay(); const daysInMonth = new Date(year, month + 1, 0).getDate();
-                let newCalendar = Array(firstDay === 0 ? 6 : firstDay - 1).fill({ isEmpty: true });
-                for (let day = 1; day <= daysInMonth; day++) { newCalendar.push({ day, date: new Date(year, month, day), key: new Date(year, month, day).toISOString().split('T')[0] }); }
-                setCalendar(newCalendar);
-            }, [currentMonth]);
-
-            const handleDayClick = (date) => { setCurrentWeek(getStartOfWeek(date)); setView('weekly'); };
-
-            return (
-                <div className="tracker-preview p-6">
-                    <div className="grid grid-cols-7 gap-1 text-center font-semibold text-gray-700">{daysOfWeek.map(day => <div key={day} className="py-2">{day}</div>)}</div>
-                    <div className="grid grid-cols-7 gap-1">
-                        {calendar.map((day, i) => {
-                            if (day.isEmpty) return <div key={`empty-${i}`} className="border rounded-lg bg-gray-50"></div>;
-                            return (
-                                <div key={day.key} onClick={() => handleDayClick(day.date)} className="calendar-day border rounded-lg p-1 relative cursor-pointer hover:bg-earth-soft">
-                                    <span className="absolute top-1 right-2 text-xs text-gray-500">{day.day}</span>
-                                    <div className="mt-6 flex flex-wrap justify-center gap-1 p-1">
-                                        {nutrientsList.map(n => (grid[day.key]?.[n.name] ? <div key={n.name} className={`w-2 h-2 rounded-full ${n.color}`} title={n.name}></div> : null))}
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
-            );
-        };
-
-        const DashboardPage = ({ userData, navigateTo, user, grid, setGrid }) => {
-            const [view, setView] = useState('weekly');
-            const today = new Date();
-            const [currentWeek, setCurrentWeek] = useState(getStartOfWeek(today));
-            const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
-            const [selectedDate, setSelectedDate] = useState(today);
-            
-            const changeWeek = (offset) => setCurrentWeek(prev => { const d = new Date(prev); d.setDate(d.getDate() + offset * 7); return d; });
-            const changeMonth = (offset) => setCurrentMonth(prev => { const d = new Date(prev); d.setMonth(d.getMonth() + offset); return d; });
-            
-            useEffect(() => { const newMonth = new Date(currentWeek); newMonth.setDate(1); setCurrentMonth(newMonth); }, [currentWeek]);
-
-            return (
-                <div className="py-20 bg-white">
-                    <div className="container mx-auto px-6">
-                        <h2 className="section-title text-earth-dark mb-2">Welcome Back, {userData.name}!</h2>
-                        <p className="text-gray-600 mb-8">Log your intake for the week below. Click the button to switch to a monthly overview.</p>
-                        <NutrientSummary grid={grid} selectedDate={selectedDate} />
-                        <div className="flex items-center justify-between my-8">
-                            {view === 'weekly' ? (
-                                <>
-                                    <SecondaryButton onClick={() => changeWeek(-1)}>&lt; Previous Week</SecondaryButton>
-                                    <h2 className="text-2xl font-serif text-earth-dark text-center">Week of {currentWeek.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })}</h2>
-                                    <SecondaryButton onClick={() => changeWeek(1)}>Next Week &gt;</SecondaryButton>
-                                </>
-                            ) : (
-                                 <>
-                                    <SecondaryButton onClick={() => changeMonth(-1)}>&lt; Previous Month</SecondaryButton>
-                                    <h2 className="text-2xl font-serif text-earth-dark text-center">{currentMonth.toLocaleString('default', { month: 'long', year: 'numeric' })}</h2>
-                                    <SecondaryButton onClick={() => changeMonth(1)}>Next Month &gt;</SecondaryButton>
-                                </>
-                            )}
-                        </div>
-                         <div className="text-center mb-8">
-                            <SecondaryButton onClick={() => setView(v => v === 'weekly' ? 'monthly' : 'weekly')}>
-                                {view === 'weekly' ? 'Switch to Monthly Overview' : 'Switch to Weekly Logging'}
-                            </SecondaryButton>
-                        </div>
-                        {view === 'weekly' ? <WeeklyTracker grid={grid} setGrid={setGrid} currentWeek={currentWeek} setSelectedDate={setSelectedDate} /> : <MonthlyOverview grid={grid} currentMonth={currentMonth} setView={setView} setCurrentWeek={setCurrentWeek} />}
-                        
-                        <div className="mt-20 bg-earth-soft p-10 rounded-2xl flex flex-col md:flex-row items-center gap-8">
-                            <div className="md:w-2/3">
-                                <h3 className="text-3xl font-serif text-earth-dark mb-4">Complete Your Hair Care Ritual</h3>
-                                <p className="text-gray-600 mb-4">You're feeding your hair with the right nutrients. Complement your efforts with our all-natural, chemical-free oil and cleanser, designed to work in harmony with your diet.</p>
-                                <p className="text-gray-700 font-semibold">Our **Back to Roots Hair Oil**, made with cold-pressed Amla and Bhringraj, strengthens follicles and promotes scalp health—the perfect external partner to your internal nutrition.</p>
-                                <PrimaryButton onClick={navigateTo('shop')} className="mt-6 inline-block text-base">Discover the Ritual</PrimaryButton>
-                            </div>
-                            <div className="md:w-1/3">
-                               <img src="oil.jpg" alt="Back to Roots Hair Oil" className="rounded-xl shadow-lg"/>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
-        };
-
-        const ShopPage = ({ navigateTo }) => (
-            <div className="py-20 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h1 className="section-title text-earth-dark">Nourish from the Outside In</h1>
-                        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Handcrafted, all-natural formulations to complete your holistic hair care journey.</p>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-12">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="bg-earth-soft p-8 rounded-2xl">
-                                <img src="oil.jpg" alt="Back to Roots Hair Oil" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
-                            </div>
-                            <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Hair Oil</h2>
-                            <p className="text-gray-600 max-w-sm mb-4">A potent, hand-crafted blend of traditional herbs to strengthen follicles, reduce hair fall, and promote a healthy scalp. No harsh chemicals.</p>
-                            <SecondaryButton onClick={() => {}}>Learn More</SecondaryButton>
-                        </div>
-                        <div className="flex flex-col items-center text-center">
-                            <div className="bg-earth-soft p-8 rounded-2xl">
-                                <img src="cleanser.jpg" alt="Back to Roots Cleanser" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
-                            </div>
-                            <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Cleanser</h2>
-                            <p className="text-gray-600 max-w-sm mb-4">A gentle, preservative-free cleanser made with Shikkakai and other powerful herbs to purify the scalp without stripping its natural oils.</p>
-                            <SecondaryButton onClick={() => {}}>Learn More</SecondaryButton>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
-        const Footer = ({ navigateTo }) => (
-            <footer className="bg-earth-dark text-white py-12">
-                <div className="container mx-auto px-6 text-center">
-                    <p className="font-serif text-2xl mb-4">Goodness of Earth</p>
-                    <div className="flex justify-center space-x-6 mb-6">
-                        <a href="#" onClick={navigateTo('home')} className="hover:text-gray-300">Home</a>
-                        <a href="#" onClick={navigateTo('dashboard')} className="hover:text-gray-300">Dashboard</a>
-                        <a href="#" onClick={navigateTo('shop')} className="hover:text-gray-300">Shop</a>
-                        <a href="#" className="hover:text-gray-300">Contact</a>
-                    </div>
-                    <p className="text-gray-400">&copy; 2025 Goodness of Earth. All Rights Reserved.</p>
-                </div>
-            </footer>
-        );
-
-        ReactDOM.render(<App />, document.getElementById('root'));
-    </script>
-    
-    <!-- Firebase SDKs -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
-
+  <footer>
+    &copy; 2025 Goodness of Earth. All rights reserved.
+  </footer>
 </body>
 </html>
