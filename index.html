@@ -22,16 +22,16 @@
     <style>
         body { font-family: 'Poppins', sans-serif; background-color: #FBF9F6; color: #4A4A4A; }
         .font-serif { font-family: 'Lora', serif; }
-        .bg-earth-green { background-color: #5A8A78; }
-        .text-earth-green { color: #5A8A78; }
-        .border-earth-green { border-color: #5A8A78; }
+        .bg-earth-green { background-color: #556B2F; } /* Updated to Olive Green */
+        .text-earth-green { color: #556B2F; } /* Updated to Olive Green */
+        .border-earth-green { border-color: #556B2F; } /* Updated to Olive Green */
         .bg-earth-light { background-color: #FBF9F6; }
         .bg-earth-soft { background-color: #EAE7E2; }
         .text-earth-dark { color: #3D5247; }
         .section-title { font-family: 'Lora', serif; font-size: 2.5rem; font-weight: 600; }
         .tracker-preview { background: white; border-radius: 1rem; padding: 1.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.07); }
         .calendar-day { min-height: 100px; }
-        .calendar-day.selected { border: 2px solid #5A8A78; background-color: #F0F5F3; }
+        .calendar-day.selected { border: 2px solid #556B2F; background-color: #F0F5F3; } /* Updated border color */
 
         /* Jar of Goodness Loader Animation */
         @keyframes fall {
@@ -140,7 +140,7 @@
                     <rect x="50" y="40" width="50" height="30" fill="#FFFFFF" stroke="#3D5247" strokeWidth="2" />
                     <rect x="45" y="30" width="60" height="10" rx="5" fill="#3D5247" />
                     <g className="falling-herbs">
-                        <circle cx="75" cy="0" r="5" fill="#5A8A78" className="herb1" />
+                        <circle cx="75" cy="0" r="5" fill="#556B2F" className="herb1" />
                         <path d="M0 0 L 5 5 L 0 10 L -5 5 Z" fill="#E53E3E" transform="translate(60 0)" className="herb2" />
                         <circle cx="90" cy="0" r="4" fill="#F6E05E" className="herb3" />
                     </g>
@@ -165,7 +165,7 @@
         );
 
         const PrimaryButton = ({ children, onClick, className = '', href }) => (
-          <a href={href || "#"} onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
+          <a href={href || "#"} target="_blank" rel="noopener noreferrer" onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
             {children}
           </a>
         );
@@ -582,7 +582,7 @@
                                     <path d="M40 90 Q 35 90 35 95 L 35 230 Q 35 240 45 240 L 147 240 Q 157 240 157 230 L 157 95 Q 157 90 152 90 Z" fill="transparent" stroke="#3D5247" strokeWidth="3" />
                                     <rect x="65" y="50" width="62" height="40" fill="transparent" stroke="#3D5247" strokeWidth="3" />
                                     <path d="M60 50 Q 60 40, 70 40 L 122 40 Q 132 40, 132 50" fill="#D2B48C" stroke="#A0522D" strokeWidth="2" />
-                                    <rect x="0" y={240 - (240-95) * (glassFillPercentage/100)} width="192" height={(240-95) * (glassFillPercentage/100)} fill="#A7F3D0" className="transition-all duration-500" clipPath="url(#jarClip)" />
+                                    <rect x="0" y={240 - (240-95) * (glassFillPercentage/100)} width="192" height={(240-95) * (glassFillPercentage/100)} fill="#DAA520" className="transition-all duration-500" clipPath="url(#jarClip)" />
                                     <clipPath id="jarClip">
                                         <path d="M40 90 Q 35 90 35 95 L 35 230 Q 35 240 45 240 L 147 240 Q 157 240 157 230 L 157 95 Q 157 90 152 90 Z" />
                                     </clipPath>
@@ -732,13 +732,13 @@
                         <h2 className="text-2xl font-serif text-earth-dark text-center mb-4">3-Month Hair Care Bundle</h2>
                         <p className="text-center text-4xl font-bold text-earth-dark mb-6">
                             <span className="text-gray-400 line-through mr-4">₹3,000</span>
-                            <span className="text-green-600 font-bold">₹1,500</span>
+                            <span className="text-earth-green font-bold">₹1,500</span>
                         </p>
                         <ul className="space-y-4 text-gray-600 mb-8">
-                            <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 3-month supply of Back to Roots Hair Oil</li>
-                            <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> 3-month supply of Back to Roots Cleanser</li>
-                            <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Full access to all monthly challenges</li>
-                            <li className="flex items-center"><span className="text-green-500 mr-2">✔</span> Full access to the daily nutrient tracker</li>
+                            <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> 3-month supply of Back to Roots Hair Oil</li>
+                            <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> 3-month supply of Back to Roots Cleanser</li>
+                            <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> Full access to all monthly challenges</li>
+                            <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> Full access to the daily nutrient tracker</li>
                         </ul>
                         <PrimaryButton onClick={() => alert('Redirecting to payment...')}>Subscribe Now</PrimaryButton>
                     </div>
