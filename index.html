@@ -101,6 +101,13 @@
             { name: "10 minutes breath work daily to reduce hair stressing cortisol", duration: 30 },
             { name: "Avoid heat styling all month", duration: 30 }
         ];
+        
+        const testimonials = [
+            { text: "Using the oil and cleanser consistently for 3 months made my hair softer and reduced hair fall. My friends noticed the difference!", author: "Ananya (Bangalore)" },
+            { text: "After 6 months, my hair feels stronger and healthier. The natural ingredients really work!", author: "Meera (Chennai)" },
+            { text: "I was skeptical at first, but after 3 months, I saw visible improvement in my hair texture.", author: "Priya (Delhi)" },
+            { text: "My hair growth has improved and I love the natural fragrance. Highly recommend for anyone struggling with hair issues.", author: "Simran (Lucknow)" }
+        ];
 
         // --- UTILITY FUNCTIONS ---
         const getStartOfWeek = (date) => {
@@ -157,8 +164,8 @@
           <a href="#" onClick={onClick} className="text-gray-600 hover:text-earth-green transition">{children}</a>
         );
 
-        const PrimaryButton = ({ children, onClick, className = '' }) => (
-          <a href="#" onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
+        const PrimaryButton = ({ children, onClick, className = '', href }) => (
+          <a href={href || "#"} onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
             {children}
           </a>
         );
@@ -324,19 +331,19 @@
                         <form className="text-left space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label className="font-semibold text-gray-700">Full Name</label>
-                                <input type="text" placeholder="Jane Doe" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
                             </div>
                             <div>
                                 <label className="font-semibold text-gray-700">Email Address</label>
-                                <input type="email" placeholder="you@example.com" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="email" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
                             </div>
                             <div>
                                 <label className="font-semibold text-gray-700">Phone Number</label>
-                                <input type="tel" placeholder="+1234567890" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
                             </div>
                             <div>
                                 <label className="font-semibold text-gray-700">Password</label>
-                                <input type="password" placeholder="••••••••" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
                             </div>
                             <button type="submit" className="w-full bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg">Create Free Account</button>
                         </form>
@@ -739,55 +746,73 @@
             </div>
         );
 
-        const ShopPage = ({ navigateTo }) => (
-            <div className="py-20 bg-white">
-                <div className="container mx-auto px-6">
-                    <div className="text-center mb-16">
-                        <h1 className="section-title text-earth-dark">Nourish from the Outside In</h1>
-                        <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Handcrafted, all-natural formulations to complete your holistic hair care journey.</p>
-                    </div>
-                    <div className="grid md:grid-cols-2 gap-12">
-                        <div className="flex flex-col items-center text-center">
-                            <div className="bg-earth-soft p-8 rounded-2xl">
-                                <img src="oil.jpg" alt="Back to Roots Hair Oil" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
-                            </div>
-                            <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Hair Oil</h2>
-                            <p className="text-gray-600 max-w-sm mb-4">A potent, hand-crafted blend of traditional herbs to strengthen follicles, reduce hair fall, and promote a healthy scalp. No harsh chemicals.</p>
-                            <SecondaryButton onClick={() => {}}>Learn More</SecondaryButton>
+        const ShopPage = ({ navigateTo }) => {
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const testimonialsPerPage = 2;
+            const totalSlides = Math.ceil(testimonials.length / testimonialsPerPage);
+
+            const nextSlide = () => {
+                setCurrentIndex(prev => (prev + 1) % totalSlides);
+            };
+
+            const prevSlide = () => {
+                setCurrentIndex(prev => (prev - 1 + totalSlides) % totalSlides);
+            };
+
+            return (
+                <div className="py-20 bg-white">
+                    <div className="container mx-auto px-6">
+                        <div className="text-center mb-16">
+                            <h1 className="section-title text-earth-dark">Nourish from the Outside In</h1>
+                            <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">Handcrafted, all-natural formulations to complete your holistic hair care journey.</p>
                         </div>
-                        <div className="flex flex-col items-center text-center">
-                            <div className="bg-earth-soft p-8 rounded-2xl">
-                                <img src="cleanser.jpg" alt="Back to Roots Cleanser" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
+                        <div className="grid md:grid-cols-2 gap-12">
+                            <div className="flex flex-col items-center text-center">
+                                <div className="bg-earth-soft p-8 rounded-2xl">
+                                    <img src="oil.jpg" alt="Back to Roots Hair Oil" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
+                                </div>
+                                <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Hair Oil</h2>
+                                <p className="text-gray-600 max-w-sm mb-4">A potent, hand-crafted blend of traditional herbs to strengthen follicles, reduce hair fall, and promote a healthy scalp. No harsh chemicals.</p>
+                                <PrimaryButton href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcVoNbTIa7" className="text-base inline-block">Buy Now</PrimaryButton>
                             </div>
-                            <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Cleanser</h2>
-                            <p className="text-gray-600 max-w-sm mb-4">A gentle, preservative-free cleanser made with Shikkakai and other powerful herbs to purify the scalp without stripping its natural oils.</p>
-                            <SecondaryButton onClick={() => {}}>Learn More</SecondaryButton>
+                            <div className="flex flex-col items-center text-center">
+                                <div className="bg-earth-soft p-8 rounded-2xl">
+                                    <img src="cleanser.jpg" alt="Back to Roots Cleanser" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
+                                </div>
+                                <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Cleanser</h2>
+                                <p className="text-gray-600 max-w-sm mb-4">A gentle, preservative-free cleanser made with Shikkakai and other powerful herbs to purify the scalp without stripping its natural oils.</p>
+                                <PrimaryButton href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcpcmjbhsO" className="text-base inline-block">Buy Now</PrimaryButton>
+                            </div>
                         </div>
-                    </div>
-                    <div className="mt-16">
-                        <h2 className="text-2xl font-serif text-earth-dark text-center mb-8">Testimonials</h2>
-                        <div className="flex overflow-x-auto space-x-6 pb-4" style={{scrollbarWidth: 'none'}}>
-                            <div className="min-w-[320px] bg-white p-6 rounded-xl shadow text-left flex-shrink-0">
-                                <p className="text-lg text-gray-700 mb-4">"Using the oil and cleanser consistently for 3 months made my hair softer and reduced hair fall. My friends noticed the difference!"</p>
-                                <p className="font-semibold text-earth-green">- Ananya (Bangalore)</p>
-                            </div>
-                            <div className="min-w-[320px] bg-white p-6 rounded-xl shadow text-left flex-shrink-0">
-                                <p className="text-lg text-gray-700 mb-4">"After 6 months, my hair feels stronger and healthier. The natural ingredients really work!"</p>
-                                <p className="font-semibold text-earth-green">- Meera (Chennai)</p>
-                            </div>
-                            <div className="min-w-[320px] bg-white p-6 rounded-xl shadow text-left flex-shrink-0">
-                                <p className="text-lg text-gray-700 mb-4">"I was skeptical at first, but after 3 months, I saw visible improvement in my hair texture."</p>
-                                <p className="font-semibold text-earth-green">- Priya (Delhi)</p>
-                            </div>
-                            <div className="min-w-[320px] bg-white p-6 rounded-xl shadow text-left flex-shrink-0">
-                                <p className="text-lg text-gray-700 mb-4">"My hair growth has improved and I love the natural fragrance. Highly recommend for anyone struggling with hair issues."</p>
-                                <p className="font-semibold text-earth-green">- Simran (Lucknow)</p>
+                        <div className="mt-16">
+                            <h2 className="text-2xl font-serif text-earth-dark text-center mb-8">Testimonials</h2>
+                            <div className="relative">
+                                <div className="overflow-hidden">
+                                    <div className="flex transition-transform duration-500 ease-in-out" style={{ transform: `translateX(-${currentIndex * 100}%)` }}>
+                                        {Array.from({ length: totalSlides }).map((_, slideIndex) => (
+                                            <div key={slideIndex} className="w-full flex-shrink-0 grid md:grid-cols-2 gap-6">
+                                                {testimonials.slice(slideIndex * testimonialsPerPage, (slideIndex + 1) * testimonialsPerPage).map((testimonial, i) => (
+                                                    <div key={i} className="bg-white p-6 rounded-xl shadow text-left">
+                                                        <p className="text-lg text-gray-700 mb-4">"{testimonial.text}"</p>
+                                                        <p className="font-semibold text-earth-green">- {testimonial.author}</p>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                                <button onClick={prevSlide} disabled={currentIndex === 0} className="absolute top-1/2 -left-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md disabled:opacity-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-earth-green" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                                </button>
+                                <button onClick={nextSlide} disabled={currentIndex === totalSlides - 1} className="absolute top-1/2 -right-4 transform -translate-y-1/2 bg-white rounded-full p-2 shadow-md disabled:opacity-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 text-earth-green" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        );
+            );
+        };
 
         const App = () => {
             const [currentPage, setCurrentPage] = useState('home');
