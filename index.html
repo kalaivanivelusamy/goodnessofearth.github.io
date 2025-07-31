@@ -17,6 +17,9 @@
     
     <!-- Babel to transpile JSX in the browser -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <!-- Razorpay Checkout Script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
 
     <!-- Custom Styles -->
     <style>
@@ -41,6 +44,14 @@
         .falling-herbs .herb1 { animation: fall 2s infinite ease-in; }
         .falling-herbs .herb2 { animation: fall 2.5s infinite ease-in; animation-delay: 0.5s; }
         .falling-herbs .herb3 { animation: fall 2.2s infinite ease-in; animation-delay: 1s; }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin 1.5s linear infinite;
+        }
+
     </style>
 </head>
 <body>
@@ -78,19 +89,6 @@
         ];
         const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         
-        const motivationalQuotes = [
-            "The secret of getting ahead is getting started.",
-            "The journey of a thousand miles begins with a single step.",
-            "Believe you can and you're halfway there.",
-            "It does not matter how slowly you go as long as you do not stop.",
-            "Success is the sum of small efforts, repeated day in and day out.",
-            "Your hair is the crown you never take off. Nourish it.",
-            "Great hair doesn't happen by chance, it happens by appointment... with your kitchen!",
-            "Invest in your hair. It is the crown you never take off.",
-            "Consistency is key. Keep going!",
-            "You are one day closer to your goal. Well done!"
-        ];
-
         const monthlyChallenges = [
             { name: "Amla & Curry Leaves Juice Challenge", duration: 30 },
             { name: "Soaked Nuts & Seeds Mix Challenge", duration: 30 },
@@ -165,7 +163,7 @@
         );
 
         const PrimaryButton = ({ children, onClick, className = '', href }) => (
-          <a href={href || "#"} target="_blank" rel="noopener noreferrer" onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
+          <a href={href || "#"} target={href ? "_blank" : ""} rel="noopener noreferrer" onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
             {children}
           </a>
         );
@@ -175,6 +173,39 @@
                 {children}
             </button>
         );
+        
+        const BuyNowButton = ({ product, userData, children, className }) => {
+            const displayRazorpay = () => {
+                const options = {
+                    key: "YOUR_RAZORPAY_KEY_ID", // IMPORTANT: Replace with your key ID from Razorpay Dashboard
+                    amount: product.price * 100, // Amount in paise
+                    currency: "INR",
+                    name: "Goodness of Earth",
+                    description: product.name,
+                    image: product.image,
+                    handler: function (response) {
+                        alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                        // You can add logic here to save the purchase to your database
+                    },
+                    prefill: {
+                        name: userData.name,
+                        email: userData.email,
+                        contact: userData.phone
+                    },
+                    theme: {
+                        color: "#556B2F"
+                    }
+                };
+                const rzp1 = new Razorpay(options);
+                rzp1.open();
+            };
+
+            return (
+                <button onClick={displayRazorpay} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
+                    {children}
+                </button>
+            );
+        };
         
         const Header = ({ navigateTo, user, userData }) => (
             <header className="bg-earth-light sticky top-0 z-50 shadow-sm">
@@ -269,7 +300,7 @@
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row items-center gap-8">
                         <div className="md:w-1/3">
-                            <img src="oil.png" alt="Back to Roots Hair Oil" className="rounded-xl shadow-lg w-full h-auto object-cover"/>
+                            <img src="oil.jpg" alt="Back to Roots Hair Oil" className="rounded-xl shadow-lg w-full h-auto object-cover"/>
                         </div>
                         <div className="md:w-2/3 text-center md:text-left">
                             <h2 className="section-title text-earth-dark">Nourish from Outside In</h2>
@@ -311,15 +342,19 @@
             const [password, setPassword] = useState('');
             const [phone, setPhone] = useState('');
             const [error, setError] = useState('');
+            const [isLoading, setIsLoading] = useState(false);
 
             const handleSubmit = async (e) => { 
                 e.preventDefault(); 
                 setError('');
+                setIsLoading(true);
                 try {
                     const userCredential = await auth.createUserWithEmailAndPassword(email, password);
-                    onSignUp(name, email, phone, userCredential.user.uid);
+                    await onSignUp(name, email, phone, userCredential.user.uid);
                 } catch (err) {
                     setError(err.message.replace('Firebase: ', ''));
+                } finally {
+                    setIsLoading(false);
                 }
             };
             return (
@@ -331,21 +366,33 @@
                         <form className="text-left space-y-4" onSubmit={handleSubmit}>
                             <div>
                                 <label className="font-semibold text-gray-700">Full Name</label>
-                                <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="text" placeholder="Full Name" value={name} onChange={(e) => setName(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required disabled={isLoading} />
                             </div>
                             <div>
                                 <label className="font-semibold text-gray-700">Email Address</label>
-                                <input type="email" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="email" placeholder="Email Address" value={email} onChange={(e) => setEmail(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required disabled={isLoading} />
                             </div>
                             <div>
                                 <label className="font-semibold text-gray-700">Phone Number</label>
-                                <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="tel" placeholder="Phone Number" value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required disabled={isLoading} />
                             </div>
                             <div>
                                 <label className="font-semibold text-gray-700">Password</label>
-                                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required />
+                                <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full mt-1 p-3 border rounded-lg bg-gray-50 focus:outline-none focus:ring-2 focus:ring-earth-green" required disabled={isLoading} />
                             </div>
-                            <button type="submit" className="w-full bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg">Create Free Account</button>
+                            <button type="submit" className="w-full bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg flex justify-center items-center disabled:opacity-75" disabled={isLoading}>
+                                {isLoading ? (
+                                    <>
+                                        <svg className="animate-spin-slow -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                        </svg>
+                                        Creating Account...
+                                    </>
+                                ) : (
+                                    'Create Free Account'
+                                )}
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -713,7 +760,7 @@
                                 <PrimaryButton onClick={navigateTo('shop')} className="mt-6 inline-block text-base">Discover the Ritual</PrimaryButton>
                             </div>
                             <div className="md:w-1/3">
-                               <img src="oil.png" alt="Back to Roots Hair Oil" className="rounded-xl shadow-lg w-full h-auto object-cover"/>
+                               <img src="oil.jpg" alt="Back to Roots Hair Oil" className="rounded-xl shadow-lg w-full h-auto object-cover"/>
                             </div>
                         </div>
                     </div>
@@ -721,7 +768,7 @@
             );
         };
 
-        const SubscriptionPage = ({ navigateTo }) => (
+        const SubscriptionPage = ({ navigateTo, userData }) => (
             <div className="py-20 bg-white">
                 <div className="container mx-auto px-6">
                     <div className="text-center mb-16">
@@ -740,13 +787,19 @@
                             <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> Full access to all monthly challenges</li>
                             <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> Full access to the daily nutrient tracker</li>
                         </ul>
-                        <PrimaryButton onClick={() => alert('Redirecting to payment...')}>Subscribe Now</PrimaryButton>
+                        <BuyNowButton 
+                            userData={userData}
+                            product={{ name: '3-Month Hair Care Bundle', price: 1500, image: 'oil.jpg' }}
+                            className="w-full"
+                        >
+                            Subscribe Now
+                        </BuyNowButton>
                     </div>
                 </div>
             </div>
         );
 
-        const ShopPage = ({ navigateTo }) => {
+        const ShopPage = ({ navigateTo, userData }) => {
             const [currentIndex, setCurrentIndex] = useState(0);
             const testimonialsPerPage = 2;
             const totalSlides = Math.ceil(testimonials.length / testimonialsPerPage);
@@ -769,19 +822,31 @@
                         <div className="grid md:grid-cols-2 gap-12">
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-earth-soft p-8 rounded-2xl">
-                                    <img src="oil.png" alt="Back to Roots Hair Oil" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
+                                    <img src="oil.jpg" alt="Back to Roots Hair Oil" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
                                 </div>
                                 <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Hair Oil</h2>
                                 <p className="text-gray-600 max-w-sm mb-4">A potent, hand-crafted blend of traditional herbs to strengthen follicles, reduce hair fall, and promote a healthy scalp. No harsh chemicals.</p>
-                                <PrimaryButton href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcVoNbTIa7" className="text-base inline-block">Buy Now</PrimaryButton>
+                                <BuyNowButton 
+                                    userData={userData}
+                                    product={{ name: 'Back to Roots Hair Oil', price: 800, image: 'oil.jpg' }}
+                                    className="text-base"
+                                >
+                                    Buy Now
+                                </BuyNowButton>
                             </div>
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-earth-soft p-8 rounded-2xl">
-                                    <img src="cleanser.png" alt="Back to Roots Cleanser" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
+                                    <img src="cleanser.jpg" alt="Back to Roots Cleanser" className="w-full h-auto max-h-64 md:max-h-full object-contain"/>
                                 </div>
                                 <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Cleanser</h2>
                                 <p className="text-gray-600 max-w-sm mb-4">A gentle, preservative-free cleanser made with Shikkakai and other powerful herbs to purify the scalp without stripping its natural oils.</p>
-                                <PrimaryButton href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcpcmjbhsO" className="text-base inline-block">Buy Now</PrimaryButton>
+                                <BuyNowButton 
+                                    userData={userData}
+                                    product={{ name: 'Back to Roots Cleanser', price: 700, image: 'cleanser.jpg' }}
+                                    className="text-base"
+                                >
+                                    Buy Now
+                                </BuyNowButton>
                             </div>
                         </div>
                         <div className="mt-16">
@@ -885,8 +950,8 @@
                     case 'dashboard': return <DashboardHubPage navigateTo={navigateTo} />;
                     case 'nutrient-tracker': return <NutrientTrackerPage navigateTo={navigateTo} userData={userData} user={user} grid={grid} setGrid={setGrid} />;
                     case 'challenge-tracker': return <ChallengeTracker navigateTo={navigateTo} user={user} userData={userData} />;
-                    case 'shop': return <ShopPage navigateTo={navigateTo} />;
-                    case 'subscription': return <SubscriptionPage navigateTo={navigateTo} />;
+                    case 'shop': return <ShopPage navigateTo={navigateTo} userData={userData} />;
+                    case 'subscription': return <SubscriptionPage navigateTo={navigateTo} userData={userData} />;
                     default: return <HomePage navigateTo={navigateTo} user={user} grid={grid} />;
                 }
             };
