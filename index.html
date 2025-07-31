@@ -79,13 +79,13 @@
 
         // --- DATA ---
         const nutrientsList = [
-            { name: 'Protein', examples: 'Chickpeas, eggs, paneer', color: 'bg-red-400' },
-            { name: 'Biotin', examples: 'Eggs, nuts, sweet potatoes', color: 'bg-blue-400' },
-            { name: 'Omega-3', examples: 'Chia seeds, flaxseeds, walnuts', color: 'bg-indigo-400' },
-            { name: 'Iron', examples: 'Dark leafy greens, nuts, legumes', color: 'bg-pink-400' },
-            { name: 'Zinc', examples: 'Pumpkin seeds, nuts, dairy', color: 'bg-yellow-400' },
-            { name: 'Vitamin C', examples: 'Amla, lemon, oranges, berries', color: 'bg-orange-400' },
-            { name: 'Hydration', examples: 'Water, herbal teas, coconut water', color: 'bg-cyan-400' },
+            { name: 'Protein', examples: 'Chickpeas, eggs, paneer, chicken, lentils, tofu, quinoa, Greek yogurt.', color: 'bg-red-400' },
+            { name: 'Biotin', examples: 'Eggs, almonds, walnuts, peanuts, sweet potatoes, mushrooms, avocados.', color: 'bg-blue-400' },
+            { name: 'Omega-3', examples: 'Flaxseeds, chia seeds, walnuts, fatty fish (salmon, mackerel), soybeans.', color: 'bg-indigo-400' },
+            { name: 'Iron', examples: 'Dark leafy greens (spinach), lentils, beans, red meat, pumpkin seeds, tofu.', color: 'bg-pink-400' },
+            { name: 'Zinc', examples: 'Pumpkin seeds, chickpeas, lentils, nuts, dairy, whole grains.', color: 'bg-yellow-400' },
+            { name: 'Vitamin C', examples: 'Amla (Indian gooseberry), citrus fruits (oranges, lemons), bell peppers, strawberries, broccoli.', color: 'bg-orange-400' },
+            { name: 'Hydration', examples: 'Water, herbal teas (peppermint, chamomile), coconut water, water-rich fruits (watermelon, cucumber).', color: 'bg-cyan-400' },
         ];
         const daysOfWeek = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
         
@@ -157,25 +157,45 @@
             </div>
         );
 
+        const FoodExamplesModal = ({ nutrient, onClose }) => {
+            if (!nutrient) return null;
+            return (
+                <div className="fixed inset-0 bg-black bg-opacity-60 flex justify-center items-center z-50 p-4">
+                    <div className="bg-white p-8 rounded-2xl shadow-lg text-center max-w-md w-full relative">
+                        <button onClick={onClose} className="absolute top-4 right-4 text-gray-400 hover:text-gray-700">
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                        <h2 className="text-2xl font-serif text-earth-dark mb-4">{nutrient.name}</h2>
+                        <p className="text-gray-600">{nutrient.examples}</p>
+                    </div>
+                </div>
+            );
+        };
+
         // --- HELPER & UI COMPONENTS ---
         const NavLink = ({ children, onClick }) => (
           <a href="#" onClick={onClick} className="text-gray-600 hover:text-earth-green transition">{children}</a>
         );
 
-        const PrimaryButton = ({ children, onClick, className = '', href }) => (
-          <a href={href || "#"} target={href ? "_blank" : ""} rel="noopener noreferrer" onClick={onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
+        const PrimaryButton = ({ children, onClick, className = '', href, disabled = false }) => (
+          <a href={href || "#"} target={href ? "_blank" : ""} rel="noopener noreferrer" onClick={disabled ? (e) => e.preventDefault() : onClick} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
             {children}
           </a>
         );
 
-        const SecondaryButton = ({ children, onClick, className = '' }) => (
-            <button onClick={onClick} className={`bg-earth-soft text-earth-dark py-2 px-4 rounded-full font-semibold hover:bg-gray-300 transition ${className}`}>
+        const SecondaryButton = ({ children, onClick, className = '', disabled = false }) => (
+            <button onClick={onClick} disabled={disabled} className={`bg-earth-soft text-earth-dark py-2 px-4 rounded-full font-semibold hover:bg-gray-300 transition ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}>
                 {children}
             </button>
         );
         
         const BuyNowButton = ({ product, userData, children, className }) => {
+            const [isLoading, setIsLoading] = useState(false);
+
             const displayRazorpay = () => {
+                setIsLoading(true);
                 const options = {
                     key: "YOUR_RAZORPAY_KEY_ID", // IMPORTANT: Replace with your key ID from Razorpay Dashboard
                     amount: product.price * 100, // Amount in paise
@@ -185,6 +205,7 @@
                     image: product.image,
                     handler: function (response) {
                         alert("Payment successful! Payment ID: " + response.razorpay_payment_id);
+                        setIsLoading(false);
                         // You can add logic here to save the purchase to your database
                     },
                     prefill: {
@@ -194,6 +215,11 @@
                     },
                     theme: {
                         color: "#556B2F"
+                    },
+                    modal: {
+                        ondismiss: function() {
+                            setIsLoading(false);
+                        }
                     }
                 };
                 const rzp1 = new Razorpay(options);
@@ -201,8 +227,18 @@
             };
 
             return (
-                <button onClick={displayRazorpay} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg ${className}`}>
-                    {children}
+                <button onClick={displayRazorpay} disabled={isLoading} className={`bg-earth-green text-white py-3 px-8 rounded-full font-semibold text-lg hover:bg-opacity-90 transition shadow-lg flex justify-center items-center disabled:opacity-75 ${className}`}>
+                    {isLoading ? (
+                        <>
+                            <svg className="animate-spin-slow -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            </svg>
+                            Processing...
+                        </>
+                    ) : (
+                        children
+                    )}
                 </button>
             );
         };
@@ -465,7 +501,7 @@
             );
         };
 
-        const WeeklyTracker = ({ grid, setGrid, currentWeek, setSelectedDate }) => {
+        const WeeklyTracker = ({ grid, setGrid, currentWeek, setSelectedDate, onNutrientClick }) => {
             const today = new Date(); today.setHours(0, 0, 0, 0);
             const weekDates = daysOfWeek.map((_, i) => { const d = new Date(currentWeek); d.setDate(d.getDate() + i); return d; });
 
@@ -481,7 +517,6 @@
                             <thead>
                                 <tr>
                                     <th className="p-3 font-semibold text-gray-700 bg-earth-soft rounded-tl-lg">Category</th>
-                                    <th className="p-3 font-semibold text-gray-700 bg-earth-soft">Examples</th>
                                     {weekDates.map((date, i) => (
                                         <th key={i} className="p-3 font-semibold text-gray-700 bg-earth-soft text-center">
                                             <div>{daysOfWeek[i]}</div><div className="text-xs font-normal">{date.getDate()}</div>
@@ -492,8 +527,11 @@
                             <tbody>
                                 {nutrientsList.map(nutrient => (
                                     <tr key={nutrient.name} className="border-b border-gray-200">
-                                        <td className="p-3 font-bold text-earth-dark">{nutrient.name}</td>
-                                        <td className="p-3 text-sm text-gray-500">{nutrient.examples}</td>
+                                        <td className="p-3 font-bold text-earth-dark">
+                                            <button onClick={() => onNutrientClick(nutrient)} className="hover:text-earth-green transition underline">
+                                                {nutrient.name}
+                                            </button>
+                                        </td>
                                         {weekDates.map((date, i) => {
                                             const isFuture = date > today;
                                             const dateKey = date.toISOString().split('T')[0];
@@ -713,20 +751,46 @@
             const [currentWeek, setCurrentWeek] = useState(getStartOfWeek(today));
             const [currentMonth, setCurrentMonth] = useState(new Date(today.getFullYear(), today.getMonth(), 1));
             const [selectedDate, setSelectedDate] = useState(today);
+            const [modalNutrient, setModalNutrient] = useState(null);
             
             const changeWeek = (offset) => setCurrentWeek(prev => { const d = new Date(prev); d.setDate(d.getDate() + offset * 7); return d; });
             const changeMonth = (offset) => setCurrentMonth(prev => { const d = new Date(prev); d.setMonth(d.getMonth() + offset); return d; });
             
             useEffect(() => { const newMonth = new Date(currentWeek); newMonth.setDate(1); setCurrentMonth(newMonth); }, [currentWeek]);
 
+            const SmartSuggestions = () => {
+                const dateKey = selectedDate.toISOString().split('T')[0];
+                const todaysLog = grid[dateKey] || {};
+                const missingNutrients = nutrientsList.filter(n => !todaysLog[n.name]);
+
+                if (missingNutrients.length === 0) {
+                    return (
+                        <div className="mt-8 text-center bg-green-100 p-4 rounded-lg text-earth-green font-semibold">
+                            Great job! You've logged all your nutrients for the day.
+                        </div>
+                    );
+                }
+                
+                let suggestion = "Need some ideas? ";
+                if (missingNutrients.find(n => n.name === 'Protein')) suggestion += "A handful of almonds or a bowl of dal can boost your Protein. ";
+                if (missingNutrients.find(n => n.name === 'Iron')) suggestion += "Try some spinach in your next meal for an Iron boost.";
+
+                return (
+                     <div className="mt-8 text-center bg-yellow-100 p-4 rounded-lg text-yellow-800">
+                        <p><strong>Today's Meal Ideas:</strong> {suggestion}</p>
+                    </div>
+                );
+            };
+
             return (
                 <div className="py-20 bg-white">
+                    {modalNutrient && <FoodExamplesModal nutrient={modalNutrient} onClose={() => setModalNutrient(null)} />}
                     <div className="container mx-auto px-6">
                         <div className="text-center mb-4">
                             <SecondaryButton onClick={navigateTo('dashboard')}>&larr; Back to Dashboard</SecondaryButton>
                         </div>
                         <h2 className="section-title text-earth-dark mb-2 text-center">Daily Nutrient Tracker</h2>
-                        <p className="text-gray-600 mb-8 text-center">Log your intake for the week below. Click the button to switch to a monthly overview.</p>
+                        <p className="text-gray-600 mb-8 text-center">Log your intake for the week below. Click a nutrient name for food examples.</p>
                         
                         <div className="flex items-center justify-between my-8">
                             {view === 'weekly' ? (
@@ -748,8 +812,9 @@
                                 {view === 'weekly' ? 'Switch to Monthly Overview' : 'Switch to Weekly Logging'}
                             </SecondaryButton>
                         </div>
-                        {view === 'weekly' ? <WeeklyTracker grid={grid} setGrid={setGrid} currentWeek={currentWeek} setSelectedDate={setSelectedDate} /> : <MonthlyOverview grid={grid} currentMonth={currentMonth} setView={setView} setCurrentWeek={setCurrentWeek} />}
+                        {view === 'weekly' ? <WeeklyTracker grid={grid} setGrid={setGrid} currentWeek={currentWeek} setSelectedDate={setSelectedDate} onNutrientClick={setModalNutrient} /> : <MonthlyOverview grid={grid} currentMonth={currentMonth} setView={setView} setCurrentWeek={setCurrentWeek} />}
                         
+                        <SmartSuggestions />
                         <NutrientSummary grid={grid} selectedDate={selectedDate} />
 
                         <div className="mt-20 bg-earth-soft p-10 rounded-2xl flex flex-col md:flex-row items-center gap-8">
@@ -787,13 +852,7 @@
                             <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> Full access to all monthly challenges</li>
                             <li className="flex items-center"><span className="text-earth-green mr-2">✔</span> Full access to the daily nutrient tracker</li>
                         </ul>
-                        <BuyNowButton 
-                            userData={userData}
-                            product={{ name: '3-Month Hair Care Bundle', price: 1500, image: 'oil.png' }}
-                            className="w-full"
-                        >
-                            Subscribe Now
-                        </BuyNowButton>
+                        <SecondaryButton disabled={true} className="w-full">Coming Soon</SecondaryButton>
                     </div>
                 </div>
             </div>
@@ -826,13 +885,10 @@
                                 </div>
                                 <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Hair Oil</h2>
                                 <p className="text-gray-600 max-w-sm mb-4">A potent, hand-crafted blend of traditional herbs to strengthen follicles, reduce hair fall, and promote a healthy scalp. No harsh chemicals.</p>
-                                <BuyNowButton 
-                                    userData={userData}
-                                    product={{ name: 'Back to Roots Hair Oil', price: 800, image: 'oil.png' }}
-                                    className="text-base"
-                                >
-                                    Buy Now
-                                </BuyNowButton>
+                                <div className="text-center">
+                                    <PrimaryButton href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcVoNbTIa7" className="text-base inline-block">Buy Now - ₹1100</PrimaryButton>
+                                    <p className="text-sm text-gray-500 mt-2">*for 500 ml</p>
+                                </div>
                             </div>
                             <div className="flex flex-col items-center text-center">
                                 <div className="bg-earth-soft p-8 rounded-2xl">
@@ -840,13 +896,10 @@
                                 </div>
                                 <h2 className="text-2xl font-serif text-earth-dark mt-6 mb-2">Back to Roots Cleanser</h2>
                                 <p className="text-gray-600 max-w-sm mb-4">A gentle, preservative-free cleanser made with Shikkakai and other powerful herbs to purify the scalp without stripping its natural oils.</p>
-                                <BuyNowButton 
-                                    userData={userData}
-                                    product={{ name: 'Back to Roots Cleanser', price: 700, image: 'cleanser.png' }}
-                                    className="text-base"
-                                >
-                                    Buy Now
-                                </BuyNowButton>
+                                <div className="text-center">
+                                    <PrimaryButton href="https://pages.razorpay.com/stores/st_NkZ2isChC6AMe2/product/li_QFivrcpcmjbhsO" className="text-base inline-block">Buy Now - ₹1000</PrimaryButton>
+                                    <p className="text-sm text-gray-500 mt-2">*for 500 gms</p>
+                                </div>
                             </div>
                         </div>
                         <div className="mt-16">
